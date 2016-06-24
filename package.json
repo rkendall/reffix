@@ -1,0 +1,24 @@
+{
+  "name": "update-dependencies",
+  "version": "1.0.0",
+  "description": "Update import and require statements in dependent files when files are moved or renamed.",
+  "main": "updateDependencies.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Robert Kendall",
+  "license": "ISC",
+  "dependencies": {
+    "cli-color": "~1.1.0",
+    "cli-prompt": "~0.6.0",
+    "confirm-simple": "~1.0.3",
+    "file": "^0.2.2",
+    "fs-extra": "^0.30.0",
+    "inquirer": "^1.0.3",
+    "prompt": "~1.0.0",
+    "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "prettyjson": "^1.1.3"
+  }
+}
