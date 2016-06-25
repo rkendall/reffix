@@ -95,7 +95,7 @@ var updater = {
 
 	getBrokenReferences: function() {
 		for (var pathOfReferencedFile in this.referencedFiles) {
-			if (!this.doesFileExist.hasOwnProperty(pathOfReferencedFile)) {
+			if (!this.doesFileExist(pathOfReferencedFile)) {
 				var referencingFiles = this.referencedFiles[pathOfReferencedFile].referencingFiles;
 				var brokenReference = {
 					referencedFile: pathOfReferencedFile,
@@ -191,41 +191,47 @@ var updater = {
 
 	promptToCorrect: function() {
 		var self = this;
-		// this.promptToSelectCorrectPath();
 		var filesToFix = this.getFilesToFix(this.brokenReferences);
+		var referencesWithMultiplePossibleCorrections = this.brokenReferences.filter(function(brokenReference) {
+			return brokenReference.possibleCorrectPaths.length > 1;
+		});
 		var promise;
-		if (Object.keys(filesToFix).length) {
-			promise = inquirer.prompt({
+		if (Object.keys(filesToFix).length || Object.keys(referencesWithMultiplePossibleCorrections).length) {
+			inquirer.prompt({
 				type: 'confirm',
 				name: 'correct',
 				message: 'Update files to correct references?'
 			}).then(function(confirmed) {
-				console.log(confirmed);
-				if (confirmed) {
-					return self.correctReferences(filesToFix);
+				console.log(confirmed.correct);
+				if (confirmed.correct) {
+					return self.correctReferences(filesToFix).then(function() {
+						self.promptToSelectCorrectPath(referencesWithMultiplePossibleCorrections);
+					});
 				} else {
 					return true;
 				}
+			}).catch(function(err) {
+				console.error(err);
 			});
 		} else {
 			promise = new Q.defer();
 			promise.resolve();
 		}
 
-		promise.then(function() {
-			// TODO Workaround to prevent results from being written after prompt
-			setTimeout(function() {
-				self.promptToSelectCorrectPath();
-			}, 500);
-		});
+		// promise.then(function() {
+		// 	// TODO Workaround to prevent results from being written after prompt
+		// 	setTimeout(function() {
+		// 		self.promptToSelectCorrectPath();
+		// 	}, 500);
+		// });
 
 	},
 	
-	promptToSelectCorrectPath: function() {
+	promptToSelectCorrectPath: function(referencesWithMultiplePossibleCorrections) {
 		var self = this;
-		var referencesWithMultiplePossibleCorrections = this.brokenReferences.filter(function(brokenReference) {
-			return brokenReference.possibleCorrectPaths.length > 1;
-		});
+		// var referencesWithMultiplePossibleCorrections = this.brokenReferences.filter(function(brokenReference) {
+		// 	return brokenReference.possibleCorrectPaths.length > 1;
+		// });
 		var questions = [];
 		referencesWithMultiplePossibleCorrections.forEach(function(referenceWithMultipleOptions) {
 			questions.push({
@@ -275,6 +281,7 @@ var updater = {
 	correctReferences: function(filesToFix) {
 		console.log('\nFiles updated to correct references:');
 		var promises = [];
+		var self = this;
 		Object.keys(filesToFix).forEach(function(pathOfFileToFix) {
 			fs.readFile(pathOfFileToFix, 'utf8', function(err, data) {
 				if (err) {
@@ -283,7 +290,7 @@ var updater = {
 					var referencesToFix = filesToFix[pathOfFileToFix].referencesToFix;
 					referencesToFix.forEach(function(referenceToFix) {
 						// TODO Use the original search pattern for this
-						data = data.replace(referenceToFix.relativePathImported, referenceToFix.correctedRelativePath);
+						data = self.replaceImportStringInFile(data, referenceToFix.relativePathImported, referenceToFix.correctedRelativePath);
 					});
 					var promise = Q.nfcall(fs.writeFile, pathOfFileToFix, data, 'utf8')
 						.then(function() {
@@ -297,6 +304,10 @@ var updater = {
 			});
 		});
 		return Q.allSettled(promises);
+	},
+
+	replaceImportStringInFile: function(fileContent, searchString, replacement) {
+		return fileContent.replace(searchString, replacement);
 	},
 
 	// UTILITY FUNCTIONS
