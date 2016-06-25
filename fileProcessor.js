@@ -240,26 +240,26 @@ var updater = {
 		var referencesWithMultiplePossibleCorrections = this.brokenReferences.filter(function(brokenReference) {
 			return brokenReference.possibleCorrectPaths.length > 1;
 		});
-		// if (Object.keys(filesToFix).length || Object.keys(referencesWithMultiplePossibleCorrections).length) {
-		// 	inquirer.prompt({
-		// 		type: 'confirm',
-		// 		name: 'correct',
-		// 		message: 'Update files to correct references?'
-		// 	}).then(function(confirmed) {
-		// 		if (confirmed.correct) {
+		if (Object.keys(filesToFix).length || Object.keys(referencesWithMultiplePossibleCorrections).length) {
+			inquirer.prompt({
+				type: 'confirm',
+				name: 'correct',
+				message: 'Update files to correct references?'
+			}).then(function(confirmed) {
+				if (confirmed.correct) {
 					return self.correctReferences(filesToFix).then(function() {
 						// Allow the results of the updates to print before displaying the prompt
 						setTimeout(function() {
 							self.promptToSelectCorrectPath(referencesWithMultiplePossibleCorrections);
 						}, 500);
 					});
-		// 		} else {
-		// 			return true;
-		// 		}
-		// 	}).catch(function(err) {
-		// 		console.error(err);
-		// 	});
-		// }
+				} else {
+					return true;
+				}
+			}).catch(function(err) {
+				console.error(err);
+			});
+		}
 
 	},
 	
