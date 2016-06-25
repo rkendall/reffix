@@ -31,10 +31,10 @@ var updater = {
 		// Command line argument
 		//var filePath = process.argv[2].replace(this.workingDir, '');
 		var self = this;
-		console.log(clc.blue('Looking for broken module references in ' + this.workingDir));
+		console.log('\n' + clc.blue.bold('Looking for broken module references') + clc.blue(' in ' + this.workingDir));
 		this.processFiles()
 			.then(function(references) {
-				console.log(clc.blue('Searching ' + Object.keys(references.existingFiles).length + ' files\n'));
+				console.log(clc.blue.bold('Searching ' + Object.keys(references.existingFiles).length + ' files\n'));
 				self.existingFiles = references.existingFiles;
 				self.referencedFiles = references.referencedFiles;
 				self.getBrokenReferences();
@@ -197,27 +197,27 @@ var updater = {
 		if (this.brokenReferences.length) {
 			this.brokenReferences.forEach(function(brokenReference) {
 				if (!brokenReference.isWithinScope) {
-					messages.push(clc.red('Unchecked Reference: ' + brokenReference.referencedFile));
+					messages.push(clc.red.bold('Unchecked Reference: ') + clc.red(brokenReference.referencedFile));
 					messages.push(clc.red('File lies outside specified scope'));
 				} else {
-					messages.push(clc.red('Broken Reference:    ' + brokenReference.referencedFile));
+					messages.push(clc.red.bold('Broken Reference:    ') + clc.red(brokenReference.referencedFile));
 					if (brokenReference.correctPath) {
-						messages.push(clc.green('Corrected Reference: ' + brokenReference.correctPath));
+						messages.push(clc.green.bold('Corrected Reference: ') + clc.green(brokenReference.correctPath));
 					} else if (brokenReference.possibleCorrectPaths.length > 1) {
-						messages.push(clc.red('Couldn\'t determine correct reference from among these possibilities:'));
+						messages.push(clc.red.bold('Couldn\'t determine correct reference from among these possibilities:'));
 						messages.push(clc.red(brokenReference.possibleCorrectPaths.join('\n')));
 					} else {
-						messages.push(clc.green('Corrected Reference: '), clc.red('Couldn\'t determine correct reference'));
+						messages.push(clc.green.bold('Corrected Reference: ') + clc.red('Couldn\'t determine correct reference'));
 					}
 				}
-				messages.push('Files Containing Broken Reference:');
+				messages.push(clc.bold('Files Containing Broken Reference:'));
 				brokenReference.referencingFiles.forEach(function(referencingFilePath) {
 					messages.push('   ' + referencingFilePath);
 				});
 				messages.push('');
 			});
 		} else {
-			messages.push(clc.green('No broken references found'));
+			messages.push(clc.green.bold('No broken references found\n'));
 		}
 		console.log(messages.join('\n'));
 	},
@@ -300,7 +300,7 @@ var updater = {
 	},
 
 	correctReferences: function(filesToFix) {
-		console.log('\nFiles updated to correct references:');
+		console.log(clc.green.bold('\nFiles updated to correct references:'));
 		var promises = [];
 		var self = this;
 		Object.keys(filesToFix).forEach(function(pathOfFileToFix) {
