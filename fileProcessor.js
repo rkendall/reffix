@@ -31,10 +31,10 @@ var updater = {
 		// Command line argument
 		//var filePath = process.argv[2].replace(this.workingDir, '');
 		var self = this;
-		console.log('Looking for broken module references in ' + this.workingDir);
+		console.log(clc.blue('Looking for broken module references in ' + this.workingDir));
 		this.processFiles()
 			.then(function(references) {
-				console.log('Searching ' + Object.keys(references.existingFiles).length + ' files\n');
+				console.log(clc.blue('Searching ' + Object.keys(references.existingFiles).length + ' files\n'));
 				self.existingFiles = references.existingFiles;
 				self.referencedFiles = references.referencedFiles;
 				self.getBrokenReferences();
@@ -71,8 +71,6 @@ var updater = {
 						var result = self.getReferencesWithinFile(path, fileContent, referencedFiles);
 						Object.assign(existingFiles, result.existingFiles);
 						referencedFiles = result.referencedFiles;
-						// existingFiles[path] = result.referencedFiles;
-						// self.getAndSavePathData(path, fileContent);
 						deferred.resolve();
 					} else {
 						console.error('Error reading file: ', err);
@@ -93,19 +91,10 @@ var updater = {
 							existingFiles: existingFiles,
 							referencedFiles: referencedFiles
 						});
-						// self.getBrokenReferences();
-						// self.getCorrectedPathsForMovedFiles();
-						// self.printReport();
-						// self.promptToCorrect();
 					});
 			});
 		return deferredResult.promise;
 	},
-
-	// getAndSavePathData: function(filePath, fileContent) {
-	// 	this.existingFiles[filePath] = {referencedFiles: []};
-	// 	this.getReferencesWithinFile(fileContent, filePath);
-	// },
 
 	getReferencesWithinFile: function(pathOfFileContainingReference, fileContent, referencedFiles) {
 		var existingFiles = {};
@@ -228,7 +217,7 @@ var updater = {
 				messages.push('');
 			});
 		} else {
-			messages.push('No broken references found');
+			messages.push(clc.green('No broken references found'));
 		}
 		console.log(messages.join('\n'));
 	},
@@ -247,10 +236,7 @@ var updater = {
 			}).then(function(confirmed) {
 				if (confirmed.correct) {
 					return self.correctReferences(filesToFix).then(function() {
-						// Allow the results of the updates to print before displaying the prompt
-						setTimeout(function() {
-							self.promptToSelectCorrectPath(referencesWithMultiplePossibleCorrections);
-						}, 500);
+						self.promptToSelectCorrectPath(referencesWithMultiplePossibleCorrections);
 					});
 				} else {
 					return true;
@@ -276,6 +262,7 @@ var updater = {
 				choices: referenceWithMultipleOptions.possibleCorrectPaths
 			})
 		});
+		console.log('\n');
 		inquirer.prompt(questions).then(function(answers) {
 			var fixedReferences = [];
 			for (var referenceToCorrect in answers) {
@@ -339,7 +326,6 @@ var updater = {
 				}
 			});
 		});
-		console.log('\n');
 		return Q.allSettled(promises);
 	},
 
