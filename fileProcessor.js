@@ -12,8 +12,8 @@ var clc = require('cli-color');
 
 var updater = {
 
-	//workingDir: '/Users/robertkendall/code/react/react-bootstrap',
-	workingDir: '/Users/robertkendall/code/react/test',
+	workingDir: '/Users/robertkendall/code/react/react-bootstrap',
+	//workingDir: '/Users/robertkendall/code/react/test',
 	//workingDir: '/Users/robertkendall/code/react/test2/perseus/src',
 	//workingDir: process.cwd(),
 	existingFiles: {},
@@ -171,7 +171,6 @@ var updater = {
 				brokenReference.possibleCorrectPaths.push(pathOfExistingFile);
 			}
 		}
-		// Don't overwrite paths that are corrected within moved files
 		if (brokenReference.possibleCorrectPaths.length === 1 && !brokenReference.correctPath) {
 			brokenReference.correctPath = brokenReference.possibleCorrectPaths[0];
 			brokenReference.isWithinScope = true;
