@@ -3,17 +3,17 @@
 var fs = require('fs');
 var path = require('path');
 var file = require('file');
-var fse = require('fs-extra');
+//var fse = require('fs-extra');
+var readdirp = require('readdirp')
 var Q = require('q');
 var confirm = require('confirm-simple');
 var inquirer = require('inquirer');
 var clc = require('cli-color');
-var prettyjson = require('prettyjson');
 
 var updater = {
 
-	workingDir: '/Users/robertkendall/code/react/react-bootstrap',
-	//workingDir: '/Users/robertkendall/code/react/test',
+	//workingDir: '/Users/robertkendall/code/react/react-bootstrap',
+	workingDir: '/Users/robertkendall/code/react/test',
 	//workingDir: '/Users/robertkendall/code/react/test2/perseus/src',
 	//workingDir: process.cwd(),
 	existingFiles: {},
@@ -23,57 +23,98 @@ var updater = {
 	excludedDirs: ['node_modules', 'build', 'qa', '.idea'],
 	supportedExtensions: ['js', 'jsx', 'json'],
 	searchPatterns: [
-		'(^|\\s)import \\S+ from $1',
-		'(^|\\s)(var|let|const) \\S+ = require\\($1\\)'
+		'(^|\\s)import \\S+ from %%',
+		'(^|\\s)(var|let|const) \\S+ = require\\(%%\\)'
 	],
-	replacementPattern: '("\\.+\\/[^"\\s]+"|\'\\.+\\/[^\'\\s]+\')',
 
 	update: function() {
 		// Command line argument
 		//var filePath = process.argv[2].replace(this.workingDir, '');
+		var self = this;
 		console.log('Looking for broken module references in ' + this.workingDir);
-		this.processFiles();
+		this.processFiles()
+			.then(function(references) {
+				console.log('Searching ' + Object.keys(references.existingFiles).length + ' files\n');
+				self.existingFiles = references.existingFiles;
+				self.referencedFiles = references.referencedFiles;
+				self.getBrokenReferences();
+				self.getCorrectedPathsForMovedFiles();
+				self.printReport();
+				self.promptToCorrect();
+			});
 	},
 
 	processFiles: function() {
 		var self = this;
-		fse.walk(this.workingDir)
+		var existingFiles = {};
+		var referencedFiles = {};
+		var deferredResult = Q.defer();
+		var options = {
+			root: this.workingDir,
+			fileFilter: [
+				'*.js',
+				'*.jsx',
+				'*.json'
+			],
+			directoryFilter: [
+				'!.git',
+				'!node_modules'
+			],
+			entryType: 'files'
+		};
+		readdirp(options)
 			.on('data', function(item) {
-				var path = item.path;
-				var excludedDirPattern = new RegExp('\\/' + self.excludedDirs.join('|') + '\\/');
-				if (/\.(js|jsx|json)$/.test(path) && !excludedDirPattern.test(path)) {
-					var promise = Q.nfcall(fs.readFile, path, 'utf8')
-						.then(function(fileContent) {
-							self.getAndSavePathData(path, fileContent)
-						})
-						.fail(function(err) {
-							console.error('Error reading file: ', err);
-						});
-					self.promises.push(promise);
-				}
+				var path = item.fullPath;
+				var deferred = Q.defer();
+				fs.readFile(path, 'utf8', function(err, fileContent) {
+					if (!err) {
+						var result = self.getReferencesWithinFile(path, fileContent, referencedFiles);
+						Object.assign(existingFiles, result.existingFiles);
+						referencedFiles = result.referencedFiles;
+						// existingFiles[path] = result.referencedFiles;
+						// self.getAndSavePathData(path, fileContent);
+						deferred.resolve();
+					} else {
+						console.error('Error reading file: ', err);
+					}
+				});
+				self.promises.push(deferred.promise);
+			})
+			.on('warn', function(err) {
+				console.error('Error getting file info: ', err);
+			})
+			.on('error', function(err) {
+				console.error('Cannot process files: ', err);
 			})
 			.on('end', function() {
 				Q.allSettled(self.promises)
 					.then(function() {
-						console.log('Searching ' + Object.keys(self.existingFiles).length + ' files\n');
-						self.getBrokenReferences();
-						self.getCorrectedPathsForMovedFiles();
-						self.printReport();
-						self.promptToCorrect();
+						deferredResult.resolve({
+							existingFiles: existingFiles,
+							referencedFiles: referencedFiles
+						});
+						// self.getBrokenReferences();
+						// self.getCorrectedPathsForMovedFiles();
+						// self.printReport();
+						// self.promptToCorrect();
 					});
 			});
+		return deferredResult.promise;
 	},
 
-	getAndSavePathData: function(filePath, fileContent) {
-		this.existingFiles[filePath] = {referencedFiles: []};
-		this.getAndSaveReferencesWithinFile(fileContent, filePath);
-	},
+	// getAndSavePathData: function(filePath, fileContent) {
+	// 	this.existingFiles[filePath] = {referencedFiles: []};
+	// 	this.getReferencesWithinFile(fileContent, filePath);
+	// },
 
-	getAndSaveReferencesWithinFile: function(fileContent, pathOfFileContainingReference) {
+	getReferencesWithinFile: function(pathOfFileContainingReference, fileContent, referencedFiles) {
+		var existingFiles = {};
 		var matches;
 		var pattern = this.getSearchPattern();
+		existingFiles[pathOfFileContainingReference] = {referencedFiles: []};
 		while ((matches = pattern.exec(fileContent)) !== null) {
 			var statement = matches[0];
+			// TODO This should be reused
 			var pathPattern = /['"]([^'"]+)['"]/;
 			var relativePathOfReference = statement.match(pathPattern)[1];
 			if (!relativePathOfReference) {
@@ -81,15 +122,19 @@ var updater = {
 				return;
 			}
 			var absolutePathOfReference = this.getAbsolutePathFromRelativePath(pathOfFileContainingReference, relativePathOfReference);
-			this.existingFiles[pathOfFileContainingReference].referencedFiles.push({
+			existingFiles[pathOfFileContainingReference].referencedFiles.push({
 				relativeReference: relativePathOfReference,
 				absoluteReference: absolutePathOfReference
 			});
-			if (!this.referencedFiles[absolutePathOfReference]) {
-				this.referencedFiles[absolutePathOfReference] = {referencingFiles: []};
+			if (!referencedFiles[absolutePathOfReference]) {
+				referencedFiles[absolutePathOfReference] = {referencingFiles: []};
 			}
-			this.referencedFiles[absolutePathOfReference].referencingFiles.push(pathOfFileContainingReference);
+			referencedFiles[absolutePathOfReference].referencingFiles.push(pathOfFileContainingReference);
 		}
+		return {
+			existingFiles: existingFiles,
+			referencedFiles: referencedFiles
+		};
 	},
 
 
@@ -195,35 +240,26 @@ var updater = {
 		var referencesWithMultiplePossibleCorrections = this.brokenReferences.filter(function(brokenReference) {
 			return brokenReference.possibleCorrectPaths.length > 1;
 		});
-		var promise;
-		if (Object.keys(filesToFix).length || Object.keys(referencesWithMultiplePossibleCorrections).length) {
-			inquirer.prompt({
-				type: 'confirm',
-				name: 'correct',
-				message: 'Update files to correct references?'
-			}).then(function(confirmed) {
-				console.log(confirmed.correct);
-				if (confirmed.correct) {
+		// if (Object.keys(filesToFix).length || Object.keys(referencesWithMultiplePossibleCorrections).length) {
+		// 	inquirer.prompt({
+		// 		type: 'confirm',
+		// 		name: 'correct',
+		// 		message: 'Update files to correct references?'
+		// 	}).then(function(confirmed) {
+		// 		if (confirmed.correct) {
 					return self.correctReferences(filesToFix).then(function() {
-						self.promptToSelectCorrectPath(referencesWithMultiplePossibleCorrections);
+						// Allow the results of the updates to print before displaying the prompt
+						setTimeout(function() {
+							self.promptToSelectCorrectPath(referencesWithMultiplePossibleCorrections);
+						}, 500);
 					});
-				} else {
-					return true;
-				}
-			}).catch(function(err) {
-				console.error(err);
-			});
-		} else {
-			promise = new Q.defer();
-			promise.resolve();
-		}
-
-		// promise.then(function() {
-		// 	// TODO Workaround to prevent results from being written after prompt
-		// 	setTimeout(function() {
-		// 		self.promptToSelectCorrectPath();
-		// 	}, 500);
-		// });
+		// 		} else {
+		// 			return true;
+		// 		}
+		// 	}).catch(function(err) {
+		// 		console.error(err);
+		// 	});
+		// }
 
 	},
 	
@@ -253,7 +289,6 @@ var updater = {
 			var filesToFix = self.getFilesToFix(fixedReferences);
 			self.correctReferences(filesToFix);
 		});
-
 	},
 
 	getFilesToFix: function (brokenReferences) {
@@ -283,37 +318,47 @@ var updater = {
 		var promises = [];
 		var self = this;
 		Object.keys(filesToFix).forEach(function(pathOfFileToFix) {
-			fs.readFile(pathOfFileToFix, 'utf8', function(err, data) {
-				if (err) {
-					console.error("Couldn't read file", err);
-				} else {
+			var deferred = Q.defer();
+			promises.push(deferred.promise);
+			fs.readFile(pathOfFileToFix, 'utf8', function(err, fileContent) {
+				if (!err) {
 					var referencesToFix = filesToFix[pathOfFileToFix].referencesToFix;
+					var correctedFileContent = fileContent;
 					referencesToFix.forEach(function(referenceToFix) {
-						// TODO Use the original search pattern for this
-						data = self.replaceImportStringInFile(data, referenceToFix.relativePathImported, referenceToFix.correctedRelativePath);
+						correctedFileContent = self.replaceImportStringInFile(correctedFileContent, referenceToFix.relativePathImported, referenceToFix.correctedRelativePath);
 					});
-					var promise = Q.nfcall(fs.writeFile, pathOfFileToFix, data, 'utf8')
-						.then(function() {
+					fs.writeFile(pathOfFileToFix, correctedFileContent, 'utf8', function(err) {
+						if (!err) {
 							console.log(pathOfFileToFix);
-						})
-						.fail(function(err) {
+							deferred.resolve();
+						} else {
 							console.error('Error writing updated file', err);
-						});
-					promises.push(promise);
+						}
+					});
+				} else {
+					console.error("Couldn't read file", err);
 				}
 			});
 		});
+		console.log('\n');
 		return Q.allSettled(promises);
 	},
 
-	replaceImportStringInFile: function(fileContent, searchString, replacement) {
-		return fileContent.replace(searchString, replacement);
+	replaceImportStringInFile: function(fileContent, searchString, replacementString) {
+		var searchPattern = this.getSearchPattern((searchString));
+		var correctedFileContent = fileContent.replace(searchPattern, function(match) {
+			return match.replace(searchString, replacementString);
+		});
+		return correctedFileContent;
 	},
 
 	// UTILITY FUNCTIONS
 
-	getSearchPattern: function() {
-		var patternString = ('(' + this.searchPatterns.join('|') + ')').replace('$1', this.replacementPattern);
+	getSearchPattern: function(replacementString) {
+		var generalReplacementPattern = '("%%"|\'%%\')';
+		var specificReplacementPattern = replacementString ? replacementString.replace(/\./g, '\\.').replace(/\//g, '\\/') : '\\.+\\/[^"\'\\s]+';
+		var replacementPattern = generalReplacementPattern.replace(/%%/g, specificReplacementPattern);
+		var patternString = ('(' + this.searchPatterns.join('|') + ')').replace(/%%/g, replacementPattern);
 		return new RegExp(patternString, 'g');
 	},
 
