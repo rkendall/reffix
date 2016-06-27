@@ -1,3 +1,3 @@
-var fileProcessor = require('./fileProcessor');
+var fileProcessor = require('./lib/fileProcessor');
 
-fileProcessor.updater.update();
+fileProcessor.update();
