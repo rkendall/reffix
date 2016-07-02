@@ -3,6 +3,7 @@ var fse = require('fs-extra');
 var Q = require('q');
 var expect = require('chai').expect;
 var mv = require('mv');
+var parser = require('../lib/parser');
 var depDoc = require('../lib/fileProcessor');
 
 describe('Original Files', function() {
@@ -13,7 +14,7 @@ describe('Original Files', function() {
 			workingDir: 'test/fixtures/original'
 		};
 		beforeEach(function(done) {
-			depDoc.getReferences(config).then(function(result) {
+			parser.getReferences(config).then(function(result) {
 				files = result;
 				done();
 			})
@@ -37,7 +38,7 @@ describe('Original Files', function() {
 			workingDir: 'test/fixtures/original'
 		};
 		beforeEach(function(done) {
-			depDoc.getBrokenReferences(config).then(function(result) {
+			parser.getBrokenReferences(config).then(function(result) {
 				brokenReferences = result;
 				done();
 			})
@@ -86,13 +87,20 @@ describe('Moved Files', function() {
 				done(err);
 			});
 	});
-	after(function() {
-		fse
+	after(function(done) {
+		fse.remove(baseDir, function(err) {
+			if (!err) {
+				console.log('Test files removed');
+				done();
+			} else {
+				done(err);
+			}
+		})
 	});
 	describe('References', function() {
 		var files;
 		beforeEach(function(done) {
-			depDoc.getReferences(config).then(function(result) {
+			parser.getReferences(config).then(function(result) {
 				files = result;
 				done();
 			})
@@ -108,7 +116,7 @@ describe('Moved Files', function() {
 			workingDir: 'test/fixtures/moved'
 		};
 		beforeEach(function(done) {
-			depDoc.getBrokenReferences(config)
+			parser.getBrokenReferences(config)
 				.then(function(result) {
 					brokenReferences = result;
 					done();
