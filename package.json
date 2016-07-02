@@ -1,27 +1,26 @@
 {
-  "name": "Module_Mender",
-  "version": "1.0.0",
-  "description": "Update import and require statements in dependent files when files are moved or renamed.",
-  "main": "updateDependencies.js",
+  "name": "dependency-doctor",
+  "version": "0.1",
+  "description": "Update broken import and require references when files are moved.",
+  "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha "
+  },
+  "bin": {
+    "depdoc": "./index.js"
   },
   "author": "Robert Kendall",
   "license": "ISC",
   "dependencies": {
     "cli-color": "~1.1.0",
-    "cli-prompt": "~0.6.0",
     "confirm-simple": "~1.0.3",
-    "file": "^0.2.2",
-    "fs-extra": "^0.30.0",
     "inquirer": "^1.0.3",
-    "prompt": "~1.0.0",
     "q": "^1.4.1",
-    "readdirp": "^2.0.1",
-    "winston": "^2.2.0"
+    "readdirp": "^2.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "fs-extra": "^0.30.0",
     "mocha": "^2.5.3"
   }
 }
