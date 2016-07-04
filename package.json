@@ -1,7 +1,7 @@
 {
   "name": "dependency-doctor",
   "version": "0.1",
-  "description": "Update broken import and require references when files are moved.",
+  "description": "Update broken references after files are moved.",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha "
@@ -13,10 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "cli-color": "~1.1.0",
-    "confirm-simple": "~1.0.3",
+    "commander": "^2.9.0",
     "inquirer": "^1.0.3",
+    "minimatch": "^3.0.2",
     "q": "^1.4.1",
-    "readdirp": "^2.0.1"
+    "readdirp": "^2.0.1",
+    "xregexp": "^3.1.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",

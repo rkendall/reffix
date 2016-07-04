@@ -4,7 +4,7 @@ var Q = require('q');
 var expect = require('chai').expect;
 var mv = require('mv');
 var parser = require('../lib/parser');
-var depDoc = require('../lib/fileProcessor');
+var depDoc = require('../dependencyDoctor');
 
 describe('Original Files', function() {
 
