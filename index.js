@@ -53,7 +53,7 @@ var init = {
 			options.referencingFileFilter = program.sources.split(',');
 		}
 		if (program.targets) {
-			options.referencingFileFilter = program.targets.split(',');
+			options.referencedFileFilter = program.targets.split(',');
 		}
 
 		init[command](options);
