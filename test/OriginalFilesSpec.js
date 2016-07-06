@@ -22,6 +22,9 @@ describe('Original Files', function() {
 		it('Should get correct number of files', function() {
 			expect(Object.keys(files.existingFiles)).to.have.length(13);
 		});
+		it('Should get correct number of referencing files', function() {
+			expect(Object.keys(files.referencingFiles)).to.have.length(1);
+		});
 		it('Should get correct file paths', function() {
 			expect(files.existingFiles).to.have.property(path.join(process.cwd(), config.workingDir, 'root/file1.json'));
 			expect(files.existingFiles).to.have.property(path.join(process.cwd(), config.workingDir, 'root/level1a/file1.jsx'));
