@@ -74,12 +74,12 @@ describe('Moved Files', function() {
 		beforeEach(function(done) {
 			parser.getBrokenReferences(config)
 				.then(function(result) {
-					brokenReferences = result;
+					brokenReferences = result.brokenReferences;
 					done();
 				})
 		});
 		it('Should find correct number of broken references', function() {
-			expect(Object.keys(brokenReferences)).to.have.length(8);
+			expect(brokenReferences).to.have.length(8);
 		});
 		it('Should correctly identify broken references', function() {
 			expect(brokenReferences[0].referencedFile).to.equal(rootDir + 'level2c/level3c/level1a/file1.jsx');

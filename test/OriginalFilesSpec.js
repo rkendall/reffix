@@ -63,7 +63,7 @@ describe('Original Files', function() {
 		};
 		beforeEach(function(done) {
 			parser.getBrokenReferences(config).then(function(result) {
-				brokenReferences = result;
+				brokenReferences = result.brokenReferences;
 				done();
 			})
 		});
