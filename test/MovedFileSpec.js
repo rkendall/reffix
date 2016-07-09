@@ -28,6 +28,7 @@ describe('Moved Files', function() {
 			.then(function() {
 				console.log('Test files copied');
 				return Q.all([
+					// Move file1.js
 					Q.nfcall(fse.move,
 						rootDir + 'file1.js',
 						rootDir + 'level2c/level3c/file1.js'
@@ -62,7 +63,7 @@ describe('Moved Files', function() {
 			})
 		});
 		it('Should get correct number of files', function() {
-			expect(Object.keys(files.existingFiles)).to.have.length(13);
+			expect(Object.keys(files.existingFiles)).to.have.length(17);
 		});
 	});
 
@@ -79,7 +80,7 @@ describe('Moved Files', function() {
 				})
 		});
 		it('Should find correct number of broken references', function() {
-			expect(brokenReferences).to.have.length(8);
+			expect(brokenReferences).to.have.length(12);
 		});
 		it('Should correctly identify broken references', function() {
 			expect(brokenReferences[0].referencedFile).to.equal(rootDir + 'level2c/level3c/level1a/file1.jsx');

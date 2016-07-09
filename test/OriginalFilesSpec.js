@@ -1,41 +1,38 @@
 var path = require('path');
-var fse = require('fs-extra');
-var Q = require('q');
 var expect = require('chai').expect;
 var mv = require('mv');
 var parser = require('../lib/parser');
-var depDoc = require('../dependencyDoctor');
 
 describe('Original Files', function() {
 
 	describe('References', function() {
 		var files;
-		var config = {
+		var options = {
 			workingDir: 'test/fixtures/original'
 		};
 		beforeEach(function(done) {
-			parser.getReferences(config).then(function(result) {
+			parser.getReferences(options).then(function(result) {
 				files = result;
 				done();
 			})
 		});
 		it('Should get correct number of files', function() {
-			expect(Object.keys(files.existingFiles)).to.have.length(13);
+			expect(Object.keys(files.existingFiles)).to.have.length(17);
 		});
 		it('Should get correct number of referencing files', function() {
 			expect(Object.keys(files.referencingFiles)).to.have.length(1);
 		});
 		it('Should get correct file paths', function() {
-			expect(files.existingFiles).to.have.property(path.join(process.cwd(), config.workingDir, 'root/file1.json'));
-			expect(files.existingFiles).to.have.property(path.join(process.cwd(), config.workingDir, 'root/level1a/file1.jsx'));
-			expect(files.existingFiles).to.have.property(path.join(process.cwd(), config.workingDir, 'root/level1a/level2a/level3a/file8.js'));
+			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'root/file1.json'));
+			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'root/level1a/file1.jsx'));
+			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'root/level1a/level2a/level3a/file8.js'));
 		});
 		it('Should get correct number of references within files', function() {
-			expect(Object.keys(files.referencedFiles)).to.have.length(8);
+			expect(Object.keys(files.referencedFiles)).to.have.length(12);
 		})
 	});
 
-	describe('Filtered References', function() {
+	describe('Filtered References with one glob', function() {
 		var files;
 		var config = {
 			workingDir: 'test/fixtures/original',
@@ -49,10 +46,31 @@ describe('Original Files', function() {
 			})
 		});
 		it('Should get correct number of existing files', function() {
-			expect(Object.keys(files.existingFiles)).to.have.length(8);
+			expect(Object.keys(files.existingFiles)).to.have.length(12);
 		});
 		it('Should get correct number of references within files', function() {
-			expect(Object.keys(files.referencedFiles)).to.have.length(5);
+			expect(Object.keys(files.referencedFiles)).to.have.length(9);
+		})
+	});
+
+	describe('Filtered References with two globs', function() {
+		var files;
+		var config = {
+			workingDir: 'test/fixtures/original',
+			referencingFileFilter: ['*.js', '*.jsx'],
+			referencedFileFilter: ['*.js', '*.jsx']
+		};
+		beforeEach(function(done) {
+			parser.getReferences(config).then(function(result) {
+				files = result;
+				done();
+			})
+		});
+		it('Should get correct number of existing files', function() {
+			expect(Object.keys(files.existingFiles)).to.have.length(15);
+		});
+		it('Should get correct number of references within files', function() {
+			expect(Object.keys(files.referencedFiles)).to.have.length(12);
 		})
 	});
 
