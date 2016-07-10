@@ -19,7 +19,7 @@ describe('Original Files', function() {
 			parser.getReferences().then(function(result) {
 				files = result;
 				done();
-			})
+			});
 		});
 		it('Should get correct number of files', function() {
 			expect(Object.keys(files.existingFiles)).to.have.length(17);
