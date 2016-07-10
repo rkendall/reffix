@@ -1,17 +1,20 @@
 var expect = require('chai').expect;
+
+var config = require('../lib/config');
 var parser = require('../lib/parser');
 var reporter = require('../lib/reporter');
 
 describe('Reports', function() {
 	var filesCheckedReport;
 	var referencingFilesReport;
-	var processingOptions = {
-		workingDir: 'test/fixtures/original',
+	var options = {
+		workingDir: 'test/fixtures/modules/original',
 		referencingFileFilter: ['*.js'],
 		referencedFileFilter: ['*.js']
 	};
 	beforeEach(function(done) {
-		parser.getAll(processingOptions)
+		config.forceSet(options);
+		parser.getAll()
 			.then(function(fileData) {
 				filesCheckedReport = reporter.reportFilesChecked(fileData);
 				var reportOptions = {referencingFiles: true};

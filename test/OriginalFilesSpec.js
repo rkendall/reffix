@@ -1,14 +1,18 @@
 var path = require('path');
 var expect = require('chai').expect;
 var mv = require('mv');
+
+var config = require('../lib/config');
 var parser = require('../lib/parser');
 
 describe('Original Files', function() {
 
+	var testWorkingDir = 'test/fixtures/modules/original';
+
 	describe('References', function() {
 		var files;
 		var options = {
-			workingDir: 'test/fixtures/original'
+			workingDir: testWorkingDir
 		};
 		beforeEach(function(done) {
 			parser.getReferences(options).then(function(result) {
@@ -34,13 +38,14 @@ describe('Original Files', function() {
 
 	describe('Filtered References with one glob', function() {
 		var files;
-		var config = {
-			workingDir: 'test/fixtures/original',
+		var options = {
+			workingDir: testWorkingDir,
 			referencingFileFilter: ['*.js'],
 			referencedFileFilter: ['*.js']
 		};
 		beforeEach(function(done) {
-			parser.getReferences(config).then(function(result) {
+			config.forceSet(options);
+			parser.getReferences().then(function(result) {
 				files = result;
 				done();
 			})
@@ -55,13 +60,14 @@ describe('Original Files', function() {
 
 	describe('Filtered References with two globs', function() {
 		var files;
-		var config = {
-			workingDir: 'test/fixtures/original',
+		var options = {
+			workingDir: testWorkingDir,
 			referencingFileFilter: ['*.js', '*.jsx'],
 			referencedFileFilter: ['*.js', '*.jsx']
 		};
 		beforeEach(function(done) {
-			parser.getReferences(config).then(function(result) {
+			config.forceSet(options);
+			parser.getReferences().then(function(result) {
 				files = result;
 				done();
 			})
@@ -76,11 +82,12 @@ describe('Original Files', function() {
 
 	describe('Broken References', function() {
 		var brokenReferences;
-		var config = {
-			workingDir: 'test/fixtures/original'
+		var options = {
+			workingDir: testWorkingDir
 		};
 		beforeEach(function(done) {
-			parser.getBrokenReferences(config).then(function(result) {
+			config.forceSet(options);
+			parser.getBrokenReferences().then(function(result) {
 				brokenReferences = result.brokenReferences;
 				done();
 			})

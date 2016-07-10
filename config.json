@@ -1,0 +1,35 @@
+{
+  "default": {
+    "workingDir": "[CWD]",
+    "directoryFilter": [
+      "!.*",
+      "!node_modules"
+    ],
+    "referencingFileFilter": [
+      "*.js",
+      "*.jsx"
+    ],
+    "referencedFileFilter": [
+      "*.js",
+      "*.jsx",
+      "*.json"
+    ],
+    "searchPatterns": [
+      "(^|\\s)import +([\\w\\-\\{\\}\\, \\*\\$]+ )?(['\"]){{valuePattern}}\\3",
+      "(^|[^\\w-])require\\((['\"]){{valuePattern}}\\2\\)"
+    ],
+    "valuePattern": "\\.+/[^'\"\\s]+"
+  },
+  "html": {
+    "referencingFileFilter": [
+      "*.html"
+    ],
+    "referencedFileFilter": [
+      "*.*"
+    ],
+    "searchPatterns": [
+      "<link +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*>"
+    ],
+    "valuePattern": "[^'\"\\s:;]+"
+  }
+}

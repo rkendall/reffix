@@ -7,16 +7,17 @@ var parser = require('../lib/parser');
 var depDoc = require('../dependencyDoctor');
 
 describe('Moved Files', function() {
+	var testBaseDir = 'test/fixtures/modules/';
 	var config = {
-		workingDir: 'test/fixtures/moved'
+		workingDir: testBaseDir + 'moved'
 	};
 	var baseDir = path.join(process.cwd(), config.workingDir) + '/';
 	var rootDir = path.join(baseDir, 'root') + '/';
 	before(function(done) {
-		Q.nfcall(fse.emptyDir, 'test/fixtures/moved')
+		Q.nfcall(fse.emptyDir, testBaseDir + 'moved')
 			.then(function() {
 				return Q.nfcall(fse.copy,
-					'test/fixtures/original',
+					testBaseDir + 'original',
 					baseDir
 				);
 			})
@@ -70,7 +71,7 @@ describe('Moved Files', function() {
 	describe('Broken References', function() {
 		var brokenReferences;
 		var config = {
-			workingDir: 'test/fixtures/moved'
+			workingDir: testBaseDir + 'moved'
 		};
 		beforeEach(function(done) {
 			parser.getBrokenReferences(config)
