@@ -3,15 +3,17 @@ var fse = require('fs-extra');
 var Q = require('q');
 var expect = require('chai').expect;
 var mv = require('mv');
+
+var config = require('../lib/config');
 var parser = require('../lib/parser');
 var depDoc = require('../dependencyDoctor');
 
 describe('Moved Files', function() {
 	var testBaseDir = 'test/fixtures/modules/';
-	var config = {
+	var options = {
 		workingDir: testBaseDir + 'moved'
 	};
-	var baseDir = path.join(process.cwd(), config.workingDir) + '/';
+	var baseDir = path.join(process.cwd(), options.workingDir) + '/';
 	var rootDir = path.join(baseDir, 'root') + '/';
 	before(function(done) {
 		Q.nfcall(fse.emptyDir, testBaseDir + 'moved')
@@ -58,7 +60,8 @@ describe('Moved Files', function() {
 	describe('References', function() {
 		var files;
 		beforeEach(function(done) {
-			parser.getReferences(config).then(function(result) {
+			config.forceSet(options);
+			parser.getReferences().then(function(result) {
 				files = result;
 				done();
 			})
@@ -70,11 +73,12 @@ describe('Moved Files', function() {
 
 	describe('Broken References', function() {
 		var brokenReferences;
-		var config = {
+		var options = {
 			workingDir: testBaseDir + 'moved'
 		};
 		beforeEach(function(done) {
-			parser.getBrokenReferences(config)
+			config.forceSet(options);
+			parser.getBrokenReferences(options)
 				.then(function(result) {
 					brokenReferences = result.brokenReferences;
 					done();
