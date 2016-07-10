@@ -1,6 +1,5 @@
 var path = require('path');
 var expect = require('chai').expect;
-var mv = require('mv');
 
 var config = require('../lib/config');
 var parser = require('../lib/parser');
