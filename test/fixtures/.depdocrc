@@ -1,0 +1,10 @@
+{
+  "test": {
+    "referencingFileFilter": [
+      "test.*"
+    ],
+    "referencedFileFilter": [
+      "test_test.*"
+    ]
+  }
+}

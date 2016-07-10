@@ -1,6 +1,6 @@
 {
   "default": {
-    "workingDir": "[CWD]",
+    "workingDir": "{{CWD}}",
     "directoryFilter": [
       ".*",
       "node_modules"
