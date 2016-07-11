@@ -1,6 +1,6 @@
 {
-  "name": "dependency-doctor",
-  "version": "0.1",
+  "name": "dep-doc",
+  "version": "0.1.0",
   "description": "Update broken references after files are moved.",
   "main": "index.js",
   "scripts": {
