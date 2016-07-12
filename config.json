@@ -18,7 +18,11 @@
       "(^|\\s)import +([\\w\\-\\{\\}\\, \\*\\$]+ )?(['\"]){{valuePattern}}\\3",
       "(^|[^\\w-])require\\((['\"]){{valuePattern}}\\2\\)"
     ],
-    "valuePattern": "\\.+/[^'\"\\s]+"
+    "valuePattern": "\\.+/[^'\"\\s]+",
+    "excludeText": [
+      "// *[^\\n]+\\n",
+      "/\\*[\\s\\S]+?\\*/"
+    ]
   },
   "html": {
     "referencingFileFilter": [
