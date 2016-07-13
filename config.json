@@ -16,7 +16,7 @@
     ],
     "searchPatterns": [
       "(^|\\s)import +([\\w\\-\\{\\}\\, \\*\\$]+ )?(['\"]){{valuePattern}}\\3",
-      "(^|[^\\w-])require\\((['\"]){{valuePattern}}\\2\\)"
+      "(^|[^\\w-])require *\\( *(['\"]){{valuePattern}}\\2 *\\)"
     ],
     "valuePattern": "\\.+/[^'\"\\s]+",
     "excludeText": [
