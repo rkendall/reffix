@@ -3,7 +3,8 @@
     "workingDir": "{{CWD}}",
     "directoryFilter": [
       ".*",
-      "node_modules"
+      "node_modules",
+      "build"
     ],
     "referencingFileFilter": [
       "*.js",
