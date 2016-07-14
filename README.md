@@ -48,7 +48,7 @@ Each option has an abbreviated (`-o`) and a full (`--option`) version that can b
 
 All lists of globs, as described below, must be comma-separated and enclosed in quotes.
 
-- `-f --filter-directories <directory-globs>` - Specify a list directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
+- `-f --filter-directories <directory-globs>` - Specify a list of directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
 - `-S --sources <file_globs>` - Specify a glob or series of globs to filter the files that contain (are sources of) references. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx'`.
 - `-T --targets [file_glob]` - Specify a glob or series of globs to filter the files that are referenced (targets of references) by other files. Overrides the default filter, which is `'*.js,*.jsx,*.json'`.
 
