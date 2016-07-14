@@ -87,7 +87,7 @@ Specify a glob or series of globs (in quotes separated by commas) to filter the 
 
 ## Configuration
 
-You can also specify filtering and parsing options by creating a `.depdocrc` file in your `$home` or `etc` directory. The file will be merged into the following default settings and should use the same format.
+You can also specify filtering and parsing options by creating a `.depdocrc` file. Place the file in your `$home` or `etc` directory, or specify the path using the `-c|--config` option. The file will be merged into the following default settings and should use the same format.
 
 ```javascript
 {
