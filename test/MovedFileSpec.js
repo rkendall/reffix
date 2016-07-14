@@ -6,7 +6,6 @@ var mv = require('mv');
 
 var config = require('../lib/config');
 var parser = require('../lib/parser');
-var depDoc = require('../dependencyDoctor');
 
 describe('Moved Files', function() {
 	var testBaseDir = 'test/fixtures/modules/';
