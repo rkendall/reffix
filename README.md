@@ -135,7 +135,7 @@ You can also specify filtering and parsing options by creating a `.depdocrc` fil
 }
 ```
 
-You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride. For example, adding the following to a `.depdocrc` file will exlucde all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
+You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride. For example, adding the following to a `.depdocrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
 
 ```
 {
