@@ -14,12 +14,12 @@ The **Dependency Doctor** for analyzing and fixing broken references in files.
 
 ## Install
 
-Clone the project, then from the project's root directory run
+Clone the project, then from the project's root directory run  
 `npm install --global`
 
 ## Command Line Usage
 
-By default, dep-doc will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to fix them. All reports list absolute paths, but relative paths will be used to update the files.
+By default, dep-doc will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to update the files to fix them. Type `y` or just hit `Enter` to make the repairs. All reports list absolute paths, but relative paths will be used to update the files.
 
 ![Command line output](img/example1.png)
 
@@ -27,7 +27,7 @@ The program can repair only references broken as a result of files being moved. 
 
  \<screenshot here>
 
- Using the command-line options described below, you can generate reports showing which files contain references and which files they refer to. You can filter the searches via command line options or configuration settings in a .depdocrc configuration file.
+ Using the command-line options described below, you can generate reports showing which files contain references and which files they refer to. You can filter the searches via command line options or configuration settings in a `.depdocrc` configuration file.
 
 ## Command Line Options
 
@@ -35,11 +35,12 @@ Each option has an abbreviated (`-o`) and a full (`--option`) version that can b
 
 ###Directory
 
-- `-d --dir` - Specify the starting directory. Defaults to the current working directory.
+- `-d --dir` - Specify the starting directory for parsing. Defaults to the current working directory.
 
 ### Error Correction
 
-- `-m html` or `--mode html` - Operate in HTML mode and fix broken `href` and `src` attributes in HTML files. Defaults to fixing `import` and `require` statements in JavaScript.  
+- `-m default` or `--mode default` - Fix `import` and `require` statements in JavaScript files. This is the default mode if `-m` is omitted.  
+- `-m html` or `--mode html` - Fix broken `href` and `src` attributes in HTML files.  
 - `-r --read-only` - Don't fix errors, just show the report.  
 - `-u --unprompted` - Fix errors without prompting.
 
@@ -47,9 +48,9 @@ Each option has an abbreviated (`-o`) and a full (`--option`) version that can b
 
 All lists of globs, as described below, must be comma-separated and enclosed in quotes.
 
-- `-f --filter-directories <directory-globs>` - List directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
-- `-S --sources <file_globs>` - Specify a glob or series of globs (in quotes separated by commas) to filter the files that contain (are sources of) references. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx'`.
-- `-T --targets [file_glob]` - Specify a glob or series of globs (in quotes separated by commas) to filter the files that are referenced (targets of references) by other files. Overrides the default filter, which is `'*.js,*.jsx,*.json'`.
+- `-f --filter-directories <directory-globs>` - Specify a list directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
+- `-S --sources <file_globs>` - Specify a glob or series of globs to filter the files that contain (are sources of) references. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx'`.
+- `-T --targets [file_glob]` - Specify a glob or series of globs to filter the files that are referenced (targets of references) by other files. Overrides the default filter, which is `'*.js,*.jsx,*.json'`.
 
 ### Reporting
 
@@ -83,7 +84,7 @@ All lists of globs, as described below, must be comma-separated and enclosed in 
 
 ## Configuration
 
-You can also specify filtering and parsing options by creating a `.depdocrc` file. Place it in your `$home` or `etc` directory, or specify its path using the command-line option `-c|--config`. The file will be merged into the following default settings and should use the same JSON format.
+You can also specify filtering and parsing options by creating a `.depdocrc` file. Place it in your `$home` or `/etc` directory, or specify its path using the command-line option `-c|--config`. The file will be merged into the following default settings and should use the same JSON format.
 
 ```javascript
 {
