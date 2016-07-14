@@ -14,7 +14,8 @@ The **Dependency Doctor** for analyzing and fixing broken references in files.
 
 ## Install
 
-`npm install --global dep-doc`
+Clone the project, then from the project's root directory run
+`npm install --global`
 
 ## Command Line Usage
 
