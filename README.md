@@ -61,7 +61,6 @@ All lists of globs, as described below, must be comma-separated and enclosed in 
 ### Help
 
 - `-h --help` - Produces the following display.
-
 ```
 -h, --help                                  output usage information
 -V, --version                               output the version number
@@ -80,7 +79,8 @@ All lists of globs, as described below, must be comma-separated and enclosed in 
 
 ## Examples
 
-`depdoc -ret -f 'test' -S '!*Test.js,!*Spec.js` Don't repair files, list errors and all references (targets), and filter out test files and directories.
+`depdoc -ret -f 'test' -S '!*Test.js,!*Spec.js`  
+Don't repair files, list errors and all references (targets), and filter out test files and directories.
 
 ## Configuration
 
