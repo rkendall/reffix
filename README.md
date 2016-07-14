@@ -34,36 +34,31 @@ Each option has an abbreviated (`-o`) and a full (`--option`) version that can b
 
 ###Directory
 
-`-d --dir` - Specify the starting directory. Defaults to the current working directory.
+- `-d --dir` - Specify the starting directory. Defaults to the current working directory.
 
 ### Error Correction
 
-`-m html` or `--mode html` - Operate in HTML mode and fix broken `href` and `src` attributes in HTML files. Defaults to fixing `import` and `require` statements in JavaScript.  
-`-r --read-only` - Don't fix errors, just show the report.  
-`-u --unprompted` - Fix errors without prompting.
+- `-m html` or `--mode html` - Operate in HTML mode and fix broken `href` and `src` attributes in HTML files. Defaults to fixing `import` and `require` statements in JavaScript.  
+- `-r --read-only` - Don't fix errors, just show the report.  
+- `-u --unprompted` - Fix errors without prompting.
 
 ### Filtering
 
 All lists of globs, as described below, must be comma-separated and enclosed in quotes.
 
-`-f --filter-directories <directory-globs>`
-List directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
-
-`-S --sources <file_globs>`
-Specify a glob or series of globs (in quotes separated by commas) to filter the files that contain (are sources of) references. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx'`.
-
-`-T --targets [file_glob]`
-Specify a glob or series of globs (in quotes separated by commas) to filter the files that are referenced (targets of references) by other files. Overrides the default filter, which is `'*.js,*.jsx,*.json'`.
+- `-f --filter-directories <directory-globs>` - List directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
+- `-S --sources <file_globs>` - Specify a glob or series of globs (in quotes separated by commas) to filter the files that contain (are sources of) references. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx'`.
+- `-T --targets [file_glob]` - Specify a glob or series of globs (in quotes separated by commas) to filter the files that are referenced (targets of references) by other files. Overrides the default filter, which is `'*.js,*.jsx,*.json'`.
 
 ### Reporting
 
-`-e --errors` List broken references and files containing them.
-`-s --show-sources` List files that contain (are sources of) references.
-`-t --show-targets` List files that are referenced (targets of references) by other files.
+- `-e --errors` - List broken references and files containing them.
+- `-s --show-sources` - List files that contain (are sources of) references.
+- `-t --show-targets` - List files that are referenced (targets of references) by other files.
 
 ### Help
 
-`-h --help` produces the following display.
+- `-h --help` - Produces the following display.
 
 ```
 -h, --help                                  output usage information
@@ -137,7 +132,7 @@ You can also specify filtering and parsing options by creating a `.depdocrc` fil
 
 You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride. For example, adding the following to a `.depdocrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
 
-```
+```javascript
 {
   "default": {
     "directoryFilter": [
