@@ -20,7 +20,7 @@ The **Dependency Doctor** for analyzing and fixing broken references in files.
 
 By default, dep-doc will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to fix them. All reports list absolute paths, but relative paths will be used to update the files.
 
-![Command line output](file:///Users/robertkendall/code/dependency-doctor/img/example1.png)
+![Command line output](img/example1.png)
 
 The program can repair only references broken as a result of files being moved. It cannot yet handle references broken as a result of files being renamed. If a broken reference refers to a filename that is shared by mutliple files in different locations, dep-doc will prompt you to select the correct filepath to use for the corrected reference.
 
