@@ -1,7 +1,7 @@
 
 # dep-doc
 
-The **Dependency Doctor** for analyzing and fixing broken references in files.
+The **Dependency Doctor** for analyzing and fixing broken references in files. [Prerelease]
 
 ## Features
 
