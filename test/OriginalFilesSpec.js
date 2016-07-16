@@ -14,7 +14,7 @@ describe('Original Files', function() {
 			workingDir: testWorkingDir
 		};
 		beforeEach(function(done) {
-			config.forceSet(options);
+			config.set(options);
 			parser.getReferences().then(function(result) {
 				files = result;
 				done();

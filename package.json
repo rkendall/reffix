@@ -4,6 +4,8 @@
   "description": "Update broken references after files are moved.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "start-silent": "node index.js -u",
     "test": "./node_modules/.bin/mocha "
   },
   "bin": {

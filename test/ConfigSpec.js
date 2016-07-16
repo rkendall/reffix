@@ -15,7 +15,7 @@ describe('Configuration', function() {
 		});
 
 		it('Should load correct value for working dir', function() {
-			var workingDir = path.join(process.cwd(), 'test/fixtures/modules/');
+			var workingDir = path.join(process.cwd(), 'test/fixtures/modules');
 			var options = {
 				workingDir: workingDir
 			};
