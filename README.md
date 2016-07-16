@@ -7,10 +7,11 @@ The **Dependency Doctor** for analyzing and fixing broken references in files. [
 
 - Fixes broken `require` and `import` statements in JavaScript files
 - Fixes broken `src` and `href` attributes in HTML files
+- Expands references you type into your files
 - Fully cusomizable to support references in any other types of files
 - Generates comprehensive reports about all the dependencies in a project
 - Comprehensive filtering options
-- Blazingly fast asynchronous performance
+- Extremely fast asynchronous performance
 
 ## Install
 
@@ -25,20 +26,25 @@ By default, dep-doc will generate a report of broken module references (`require
 
 The program can repair only references broken as a result of files being moved. It cannot yet handle references broken as a result of files being renamed. If a broken reference refers to a filename that is shared by mutliple files in different locations, dep-doc will prompt you to select the correct filepath to use for the corrected reference.
 
- \<screenshot here>
+![Prompt to choose file](img/example2.png)
 
  Using the command-line options described below, you can generate reports showing which files contain references and which files they refer to. You can filter the searches via command line options or configuration settings in a `.depdocrc` configuration file.
+ 
+## Tip
+ 
+Use `dep-doc` to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./filename.js`, run `dep-doc` to update the file and fix the reference, then reload it in your editor.
 
 ## Command Line Options
 
-Each option has an abbreviated (`-o`) and a full (`--option`) version that can be used interchangeably.
+### General Usage
 
-###Directory
+`dep-doc [options] [working_directory]`
 
-- `-d --dir` - Specify the starting directory for parsing. Defaults to the current working directory.
+Each option has an abbreviated (`-o`) and a full (`--option`) version that can be used interchangeably. `working_directory` is the starting path to use for parsing files. It defaults to the directory from which the command is executed.
 
 ### Error Correction
 
+- `-e --errors` - List broken references and files containing them. This option is engaged by default if none of the reporting options below are engaged.
 - `-m default` or `--mode default` - Fix `import` and `require` statements in JavaScript files. This is the default mode if `-m` is omitted.  
 - `-m html` or `--mode html` - Fix broken `href` and `src` attributes in HTML files.  
 - `-r --read-only` - Don't fix errors, just show the report.  
@@ -46,40 +52,39 @@ Each option has an abbreviated (`-o`) and a full (`--option`) version that can b
 
 ### Filtering
 
-All lists of globs, as described below, must be comma-separated and enclosed in quotes.
+All lists of globs, as described below, must be separated by commas or spaces and enclosed in quotes.
 
-- `-f --filter-directories <directory-globs>` - Specify a list of directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
-- `-S --sources <file_globs>` - Specify a glob or series of globs to filter the files that contain (are sources of) references. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx'`.
-- `-T --targets [file_glob]` - Specify a glob or series of globs to filter the files that are referenced (targets of references) by other files. Overrides the default filter, which is `'*.js,*.jsx,*.json'`.
+- `-d --dir <directory_globs>` - Specify a list of directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
+- `-f --files <source_globs> [target_globs]` - Specify a glob or list of globs to filter the source (referencing) and target (referenced) files that are analyzed and repaired. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx' '*.js,*.jsx,*.json'`. `source_globs` is required. If you wish to filter only target files, enter `''` for `source_globs`.
 
 ### Reporting
 
-- `-e --errors` - List broken references and files containing them.
-- `-s --show-sources` - List files that contain (are sources of) references.
-- `-t --show-targets` - List files that are referenced (targets of references) by other files.
+- `-s --sources` - List files that contain (are sources of) references.
+- `-t --targets` - List files that are referenced (targets of references) by other files.
 
 ### Help
 
 - `-h --help` - Produces the following display.
 ```
--h, --help                                  output usage information
--V, --version                               output the version number
--c, --config <filepath>                     Path of custom configuration file
--m, --mode <default|html>                   Type of references to look for, module import/require references (default) or HTML links (html)
--d, --dir <directory>                       The working directory in which to fix broken references recursively
--f, --filter-directories <directory_globs>  Comma-separated list of directories to exclude from parsing. Quotes required. (e.g., 'test,bin')
--S, --sources <file_globs>                  Filter the sources that are analyzed and repaired
--T, --targets <file_globs>                  Filter the targets that are analyzed and repaired
--e, --errors                                List the files that contain broken references to other files and prompt you to fix them
--s, --show-sources                          List the files (sources of references) that contain references to other files
--t, --show-targets                          List the files (targets of references) that are referenced by other files
--u, --unprompted                            Don't prompt to fix broken references, just fix them (unless -r)
--r, --read-only                             Don't fix broken references
+-h, --help                                 output usage information
+-V, --version                              output the version number
+-c, --config [filepath]                    Path of custom configuration file
+-m, --mode <default|html>                  Type of references to look for, module import/require references (default) or HTML links (html)
+-d, --dir <directory>                      Comma-separated list of directories to exclude from parsing. Quotes required. (e.g., 'test,bin')
+-f, --files <source_globs> [target_globs]  Filter the source (referencing) and target (referenced) files that are analyzed and repaired. (e.g., '*1.js,*2.js' 'file.js'
+-e, --errors                               List the files that contain broken references to other files and prompt you to fix them
+-s, --sources                              List the files (sources of references) that contain references to other files
+-t, --targets                              List the files (targets of references) that are referenced by other files
+-u, --unprompted                           Don't prompt to fix broken references, just fix them (unless -r)
+-r, --read-only                            Don't fix broken references
 ```
 
 ## Examples
 
-`depdoc -ret -f 'test' -S '!*Test.js,!*Spec.js`  
+`depdoc`
+List all broken references and prompt you to fix them.
+
+`depdoc -ret -d 'test' -f '!*Test.js,!*Spec.js'`  
 Don't repair files, list errors and all references (targets), and filter out test files and directories.
 
 ## Configuration
