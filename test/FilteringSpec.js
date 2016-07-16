@@ -70,8 +70,38 @@ describe('Filtering', function() {
 		it('Should get correct number of referencing/referenced files', function() {
 			expect(Object.keys(files.referencingFiles)).to.have.length(3);
 			expect(Object.keys(files.referencedFiles)).to.have.length(2);
+			expect(Object.keys(files.referencedFiles)).to.not.contain(path.join(process.cwd(), 'test/fixtures/filtering/foo_file1.jsx'));
 		});
 	});
 
+	describe('Should filter files by excluding sources', function() {
+		var files;
+		var options = {
+			workingDir: testWorkingDir,
+			"directoryFilter": [
+			],
+			"referencingFileFilter": [
+				"!foo*.*"
+			],
+			"referencedFileFilter": [
+				"*.js",
+				"*.jsx"
+			]
+		};
+		beforeEach(function(done) {
+			config.forceSet(options);
+			parser.getReferences().then(function(result) {
+				files = result;
+				done();
+			});
+		});
+		afterEach(function() {
+			config.reset();
+		});
+		it('Should get correct number of referencing/referenced files', function() {
+			expect(Object.keys(files.referencingFiles)).to.have.length(2);
+			expect(Object.keys(files.referencedFiles)).to.have.length(3);
+		});
+	});
 
 });
