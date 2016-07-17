@@ -1,14 +1,14 @@
 
-# dep-doc
+# refix
 
-The **Dependency Doctor** for analyzing and fixing broken references in files. [Prerelease]
+The **easy fix** for your **broken references**. Analyze and batch repair broken references across an entire project. [Prerelease]
 
 ## Features
 
 - Fixes broken `require` and `import` statements in JavaScript files
 - Fixes broken `src` and `href` attributes in HTML files
-- Expands references you type into your files
 - Fully cusomizable to support references in any other types of files
+- Expands references you type into your files
 - Generates comprehensive reports about all the dependencies in a project
 - Comprehensive filtering options
 - Extremely fast asynchronous performance
@@ -20,11 +20,11 @@ Clone the project, then from the project's root directory run
 
 ## Command Line Usage
 
-By default, dep-doc will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to update the files to fix them. Type `y` or just hit `Enter` to make the repairs. All reports list absolute paths, but relative paths will be used to update the files.
+By default, refix will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to update the files to fix them. Type `y` or just hit `Enter` to make the repairs. All reports list absolute paths, but relative paths will be used to update the files.
 
 ![Command line output](img/example1.png)
 
-The program can repair only references broken as a result of files being moved. It cannot yet handle references broken as a result of files being renamed. If a broken reference refers to a filename that is shared by mutliple files in different locations, dep-doc will prompt you to select the correct filepath to use for the corrected reference.
+The program can repair only references broken as a result of files being moved. It cannot yet handle references broken as a result of files being renamed. If a broken reference refers to a filename that is shared by mutliple files in different locations, refix will prompt you to select the correct filepath to use for the corrected reference.
 
 ![Prompt to choose file](img/example2.png)
 
@@ -32,13 +32,13 @@ The program can repair only references broken as a result of files being moved. 
  
 ## Tip
  
-Use `dep-doc` to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./filename.js`, run `dep-doc` to update the file and fix the reference, then reload it in your editor.
+Use `refix` to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./filename.js`, run `refix` to update the file and fix the reference, then reload it in your editor.
 
 ## Command Line Options
 
 ### General Usage
 
-`dep-doc [options] [working_directory]`
+`refix [options] [working_directory]`
 
 Each option has an abbreviated (`-o`) and a full (`--option`) version that can be used interchangeably. `working_directory` is the starting path to use for parsing files. It defaults to the directory from which the command is executed.
 

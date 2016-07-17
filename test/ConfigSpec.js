@@ -56,7 +56,7 @@ describe('Configuration', function() {
 
 		beforeEach(function() {
 			config.reset();
-			var pathOfRcFile = path.join(process.cwd(), 'test/fixtures/.depdocrc');
+			var pathOfRcFile = path.join(process.cwd(), 'test/fixtures/.refixrc');
 			config.set(null, pathOfRcFile);
 		});
 		afterEach(function() {

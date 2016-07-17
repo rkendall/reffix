@@ -1,5 +1,5 @@
 {
-  "name": "dep-doc",
+  "name": "refix",
   "version": "0.1.0",
   "description": "Update broken references after files are moved.",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "test": "./node_modules/.bin/mocha "
   },
   "bin": {
-    "depdoc": "./index.js"
+    "ref": "./index.js"
   },
   "author": "Robert Kendall",
   "license": "ISC",
