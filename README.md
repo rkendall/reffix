@@ -28,11 +28,11 @@ The program can repair only references broken as a result of files being moved. 
 
 ![Prompt to choose file](img/example2.png)
 
- Using the command-line options described below, you can generate reports showing which files contain references and which files they refer to. You can filter the searches via command line options or configuration settings in a `.depdocrc` configuration file.
+ Using the command-line options described below, you can generate reports showing which files contain references and which files they refer to. You can filter the searches via command line options or configuration settings in a `.refixrc` configuration file.
  
 ## Tip
  
-Use `refix` to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./filename.js`, run `refix` to update the file and fix the reference, then reload it in your editor.
+Use `refix` to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./nameOfYourFile.js`, run `refix` to update the file and replace `./` with the correct path, then reload the file in your editor.
 
 ## Command Line Options
 
@@ -47,8 +47,8 @@ Each option has an abbreviated (`-o`) and a full (`--option`) version that can b
 - `-e --errors` - List broken references and files containing them. This option is engaged by default if none of the reporting options below are engaged.
 - `-m default` or `--mode default` - Fix `import` and `require` statements in JavaScript files. This is the default mode if `-m` is omitted.  
 - `-m html` or `--mode html` - Fix broken `href` and `src` attributes in HTML files.  
-- `-r --read-only` - Don't fix errors, just show the report.  
-- `-u --unprompted` - Fix errors without prompting.
+- `-n --no-prompts` - Fix errors without prompting (unless overridden by `-r`).
+- `-r --report-only` - Don't fix errors, just show the report. (Overrides `-p`.)
 
 ### Filtering
 
@@ -68,33 +68,38 @@ All lists of globs, as described below, must be separated by commas or spaces an
 ```
 -h, --help                                 output usage information
 -V, --version                              output the version number
--c, --config [filepath]                    Path of custom configuration file
--m, --mode <default|html>                  Type of references to look for, module import/require references (default) or HTML links (html)
--d, --dir <directory>                      Comma-separated list of directories to exclude from parsing. Quotes required. (e.g., 'test,bin')
--f, --files <source_globs> [target_globs]  Filter the source (referencing) and target (referenced) files that are analyzed and repaired. (e.g., '*1.js,*2.js' 'file.js'
--e, --errors                               List the files that contain broken references to other files and prompt you to fix them
--s, --sources                              List the files (sources of references) that contain references to other files
--t, --targets                              List the files (targets of references) that are referenced by other files
--u, --unprompted                           Don't prompt to fix broken references, just fix them (unless -r)
--r, --read-only                            Don't fix broken references
+-c, --config [filepath]                    path of custom configuration file
+-m, --mode <default|html>                  type of references to look for, JS import/require (default) or HTML href/src (html)
+-f, --files <source_globs> [target_globs]  filter the source (referencing) and target (referenced) files parsed (e.g., '*1.js,*2.js' 'file.js'
+-d, --dirs <directory_globs>               exclude from sources the specified directories (e.g., 'test,bin')
+-e, --errors                               list broken references and prompt to fix them
+-s, --sources                              list files (sources of references) containing references to other files
+-t, --targets                              list files (targets of references) referenced by other files
+-n, --no-prompts                           fix broken references without prompting (unless -r)
+-r, --report-only                          don't fix broken references, just display reports
 ```
 
 ## Examples
 
-`depdoc`
+`refix`
 List all broken references and prompt you to fix them.
 
-`depdoc -ret -d 'test' -f '!*Test.js,!*Spec.js'`  
+`refix -ret -d 'test' -f '!*Test.js,!*Spec.js'`  
 Don't repair files, list errors and all references (targets), and filter out test files and directories.
 
-## Configuration
+`refix -u -f '' '**/examples/*Widget.*,**/examples/*Module.*'`
+Repair files without prompting. Fix only references to widgets and modules in `examples` directory. 
 
-You can also specify filtering and parsing options by creating a `.depdocrc` file. Place it in your `$home` or `/etc` directory, or specify its path using the command-line option `-c|--config`. The file will be merged into the following default settings and should use the same JSON format.
+## Customization
+
+### Configuration File
+
+You can also specify filtering and parsing options by creating a `.refixrc` file. Place it in your `$home` or `/etc` directory, or specify its path using the command-line option `-c|--config`. The file will be merged into the following default settings and should use the same JSON format.
 
 ```javascript
 {
   "default": {
-    "workingDir": "{{CWD}}",
+    "workingDir": ".",
     "directoryFilter": [
       ".*",
       "node_modules",
@@ -137,7 +142,7 @@ You can also specify filtering and parsing options by creating a `.depdocrc` fil
 }
 ```
 
-You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride. For example, adding the following to a `.depdocrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
+You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride. For example, adding the following to a `.refixrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
 
 ```javascript
 {
