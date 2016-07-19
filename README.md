@@ -1,7 +1,7 @@
 
 # refix
 
-The **easy fix** for your **broken references**. Analyze and batch repair broken references across an entire project. [Prerelease]
+**Reference Fixer** -- the easy fix for your broken references. Analyze and batch repair broken references across an entire project. [Prerelease]
 
 ## Features
 
