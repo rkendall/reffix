@@ -1,15 +1,15 @@
 
 # refix
 
-**Reference Fixer** -- the easy fix for your broken references. Analyze and batch repair broken references across an entire project. [Prerelease]
+**Reference Fixer** -- the easy fix for broken file path references. Analyze and batch repair broken references across an entire project. [Prerelease]
 
 ## Features
 
 - Fixes broken `require` and `import` statements in JavaScript files
 - Fixes broken `src` and `href` attributes in HTML files
-- Fully cusomizable to support references in any other types of files
+- Fully customizable to support other types of references
 - Expands references you type into your files
-- Generates comprehensive reports about all the dependencies in a project
+- Generates comprehensive reports about all the filepath dependencies in a project
 - Comprehensive filtering options
 - Extremely fast asynchronous performance
 
@@ -24,7 +24,7 @@ By default, refix will generate a report of broken module references (`require` 
 
 ![Command line output](img/example1.png)
 
-The program can repair only references broken as a result of files being moved. It cannot yet handle references broken as a result of files being renamed. If a broken reference refers to a filename that is shared by mutliple files in different locations, refix will prompt you to select the correct filepath to use for the corrected reference.
+If git version control is available for the files being parsed, `refix` will use data from git status to fix references broken by renaming or moving files. If git is unavailable, the program can repair references broken as a result of files being moved but not as a result of files being renamed. If a broken reference refers to a filename that is shared by mutliple files in different locations, refix may not be able to determine which path to use and will prompt you to select the correct filepath.
 
 ![Prompt to choose file](img/example2.png)
 
