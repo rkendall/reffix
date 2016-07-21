@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 var config = require('../lib/config');
 var parser = require('../lib/parser');
 
-describe('Original Files', function() {
+describe.only('Original Files', function() {
 
 	var testWorkingDir = 'test/fixtures/modules/original';
 

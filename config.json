@@ -11,12 +11,10 @@
       "*.jsx"
     ],
     "referencedFileFilter": [
-      "*.js",
-      "*.jsx",
-      "*.json"
+      "*.*"
     ],
     "searchPatterns": [
-      "(^|\\s)import +([\\w\\-\\{\\}\\, \\*\\$]+ )?(['\"]){{valuePattern}}\\3",
+      "(^|\\s)import\\s+([\\w\\-\\{\\}\\,\\*\\$\\s]+\\s+)?(['\"]){{valuePattern}}\\3",
       "(^|[^\\w-])require *\\( *(['\"]){{valuePattern}}\\2 *\\)"
     ],
     "valuePattern": "\\.+/[^'\"\\s]+",
@@ -27,16 +25,17 @@
   },
   "html": {
     "referencingFileFilter": [
-      "*.html"
+      "*.html",
+      "*.js"
     ],
     "referencedFileFilter": [
       "*.*"
     ],
     "searchPatterns": [
-      "<link +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*>",
-      "<a +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*>",
-      "<script +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>",
-      "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>"
+      "<link +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*?/?>",
+      "<a +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*?/?>",
+      "<script +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*?/?>",
+      "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*?/?>"
     ],
     "valuePattern": "[^'\"\\s:;#]+"
   }
