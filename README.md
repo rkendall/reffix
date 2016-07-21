@@ -20,6 +20,8 @@ Clone the project, then from the project's root directory run
 
 ## Command Line Usage
 
+`$ ref`
+
 By default, refix will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to update the files to fix them. Type `y` or just hit `Enter` to make the repairs. All reports list absolute paths, but relative paths will be used to update the files.
 
 ![Command line output](img/example1.png)
@@ -38,9 +40,9 @@ Use `refix` to automatically expand references you type into files. If you don't
 
 ### General Usage
 
-`refix [options] [working_directory]`
+`ref [options] [--] [working_directory]`
 
-Each option has an abbreviated (`-o`) and a full (`--option`) version that can be used interchangeably. `working_directory` is the starting path to use for parsing files. It defaults to the directory from which the command is executed.
+Each option has an abbreviated (`-o`) and a full (`--option`) version that can be used interchangeably. `working_directory` is the starting path to use for parsing files. It defaults to the directory from which the command is executed. If `working_directory` is preceded by option arguments, it must itself be preceded by `--`.
 
 ### Error Correction
 
@@ -58,6 +60,8 @@ All lists of globs, as described below, must be separated by commas or spaces an
 - `-f --files <source_globs> [target_globs]` - Specify a glob or list of globs to filter the source (referencing) and target (referenced) files that are analyzed and repaired. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx' '*.js,*.jsx,*.json'`. `source_globs` is required. If you wish to filter only target files, enter `''` for `source_globs`.
 
 ### Reporting
+
+When one of the following switches is set, you won't be prompted to repair files unless you include `-e`. 
 
 - `-s --sources` - List files that contain (are sources of) references.
 - `-t --targets` - List files that are referenced (targets of references) by other files.
@@ -81,14 +85,17 @@ All lists of globs, as described below, must be separated by commas or spaces an
 
 ## Examples
 
-`refix`
+`$ ref`
 List all broken references and prompt you to fix them.
 
-`refix -ret -d 'test' -f '!*Test.js,!*Spec.js'`  
+`$ ref ../`
+List all broken references and prompt you to fix them.
+
+`$ ref -ret -d 'test' -f '!*Test.js,!*Spec.js'`  
 Don't repair files, list errors and all references (targets), and filter out test files and directories.
 
-`refix -u -f '' '**/examples/*Widget.*,**/examples/*Module.*'`
-Repair files without prompting. Fix only references to widgets and modules in `examples` directory. 
+`$ ref -u -f '' '**/examples/*Widget.*,**/examples/*Module.*' -- ../src`
+Repair files without prompting. Fix only references to widgets and modules in `examples` directory. Set the working directory to `../src.
 
 ## Customization
 
