@@ -29,9 +29,6 @@ describe('Moved Files', function() {
 				done();
 			})
 		});
-		it('Should get correct number of files', function() {
-			expect(Object.keys(files.existingFiles)).to.have.length(17);
-		});
 	});
 
 	describe('Broken References', function() {

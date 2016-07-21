@@ -14,6 +14,7 @@ describe('Outside CWD', function() {
 			workingDir: testWorkingDir
 		};
 		beforeEach(function(done) {
+			config.reset();
 			config.forceSet(options);
 			parser.getReferences().then(function(result) {
 				files = result;

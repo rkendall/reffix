@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 var config = require('../lib/config');
 var parser = require('../lib/parser');
 
-describe.only('Original Files', function() {
+describe('Original Files', function() {
 
 	var testWorkingDir = 'test/fixtures/modules/original';
 
@@ -14,14 +14,18 @@ describe.only('Original Files', function() {
 			workingDir: testWorkingDir
 		};
 		beforeEach(function(done) {
+			config.reset();
 			config.set(options);
 			parser.getReferences().then(function(result) {
 				files = result;
 				done();
 			});
 		});
+		afterEach(function() {
+			config.reset();
+		});
 		it('Should get correct number of files', function() {
-			expect(Object.keys(files.existingFiles)).to.have.length(17);
+			expect(Object.keys(files.existingFiles)).to.have.length(23);
 		});
 		it('Should get correct number of referencing files', function() {
 			expect(Object.keys(files.referencingFiles)).to.have.length(2);

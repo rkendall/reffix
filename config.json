@@ -32,10 +32,10 @@
       "*.*"
     ],
     "searchPatterns": [
-      "<link +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*?/?>",
-      "<a +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*?/?>",
-      "<script +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*?/?>",
-      "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*?/?>"
+      "<link +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*>",
+      "<a +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*>",
+      "<script +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>",
+      "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>"
     ],
     "valuePattern": "[^'\"\\s:;#]+"
   }
