@@ -89,13 +89,13 @@ When one of the following switches is set, you won't be prompted to repair files
 List all broken references and prompt you to fix them.
 
 `$ ref ../`
-List all broken references and prompt you to fix them.
+Begin parsing in the parent directory and list all broken references and prompt you to fix them.
 
 `$ ref -ret -d 'test' -f '!*Test.js,!*Spec.js'`  
 Don't repair files, list errors and all references (targets), and filter out test files and directories.
 
 `$ ref -u -f '' '**/examples/*Widget.*,**/examples/*Module.*' -- ../src`
-Repair files without prompting. Fix only references to widgets and modules in `examples` directory. Set the working directory to `../src.
+Repair files without prompting. Fix only references to widgets and modules in `examples` directory. Set the working directory to `../src`.
 
 ## Customization
 
