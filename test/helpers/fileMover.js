@@ -6,22 +6,17 @@ var mv = require('mv');
 var fileMover = {
 
 	testBaseDir: 'test/fixtures/modules/',
-	workingDir: 'test/fixtures/modules/moved',
 
-	moveFiles: function(done) {
+	moveFiles: function(dir, done) {
 		var self = this;
-		var rootDir = path.join(this.getBaseDir(), 'root') + '/';
-		return Q.nfcall(fse.emptyDir, this.workingDir)
+		var workingDir = this.getFullTestPath(dir);
+		var rootDir = path.join(workingDir, 'root') + '/';
+		return Q.nfcall(fse.emptyDir, workingDir)
 			.then(function() {
 				return Q.nfcall(fse.copy,
 					self.testBaseDir + 'original',
-					self.getBaseDir()
+					workingDir
 				);
-			})
-			.then(function() {
-				return Q.nfcall(fse.mkdirs,
-					rootDir + 'level1c/level2c/level3c'
-				)
 			})
 			.then(function() {
 				console.log('Test files copied');
@@ -29,11 +24,15 @@ var fileMover = {
 					// Move files
 					Q.nfcall(fse.move,
 						rootDir + 'file-with-references.js',
-						rootDir + 'level2c/level3c/file-with-references.js'
+						rootDir + 'level1c/level2c/file-with-references.js'
 					),
 					Q.nfcall(fse.move,
 						rootDir + 'level1b/file4.js',
 						rootDir + 'level1a/file4.js'
+					),
+					Q.nfcall(fse.move,
+						rootDir + 'level1b/level2b/file7.js',
+						rootDir + 'file7.js'
 					)
 				]);
 			})
@@ -47,20 +46,22 @@ var fileMover = {
 			});
 	},
 
-	deleteMovedFiles: function(done) {
-		fse.remove(this.getBaseDir(), function(err) {
+	deleteMovedFiles: function(dir, done) {
+		var workingDir = this.getFullTestPath(dir);
+		fse.remove(workingDir, function(err) {
 			if (!err) {
 				console.log('Test files removed');
 				done();
 			} else {
+				console.error(err);
 				done(err);
 			}
 		})
 
 	},
 
-	getBaseDir: function() {
-		return path.join(process.cwd(), this.workingDir) + '/';
+	getFullTestPath: function(dir) {
+		return path.resolve(this.testBaseDir, dir) + '/';
 	}
 
 };

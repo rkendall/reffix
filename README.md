@@ -32,9 +32,9 @@ If git version control is available for the files being parsed, `refix` will use
 
  Using the command-line options described below, you can generate reports showing which files contain references and which files they refer to. You can filter the searches via command line options or configuration settings in a `.refixrc` configuration file.
  
-## Tip
+## Path Expansion
  
-Use `refix` to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./nameOfYourFile.js`, run `refix` to update the file and replace `./` with the correct path, then reload the file in your editor.
+Use `refix` to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./myFile.js'` and run `refix` to update the file. When you reload the page in your editor, the path will be expanded to the correct relative reference -- for example: `'../../full/path/of/myFile.js'`.
 
 ## Command Line Options
 

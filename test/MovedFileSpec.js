@@ -1,6 +1,4 @@
 var path = require('path');
-var fse = require('fs-extra');
-var Q = require('q');
 var expect = require('chai').expect;
 var mv = require('mv');
 
@@ -10,16 +8,17 @@ var parser = require('../lib/parser');
 
 describe('Moved Files', function() {
 	var testBaseDir = 'test/fixtures/modules/';
+	var topLevelDir = 'moved';
 	var options = {
-		workingDir: testBaseDir + 'moved'
+		workingDir: testBaseDir + topLevelDir
 	};
 	var baseDir = path.join(process.cwd(), options.workingDir) + '/';
 	var rootDir = path.join(baseDir, 'root') + '/';
 	before(function(done) {
-		fileMover.moveFiles(done);
+		fileMover.moveFiles(topLevelDir, done);
 	});
 	after(function(done) {
-		fileMover.deleteMovedFiles(done);
+		fileMover.deleteMovedFiles(topLevelDir, done);
 	});
 	describe('References', function() {
 		var files;
@@ -38,7 +37,7 @@ describe('Moved Files', function() {
 	describe('Broken References', function() {
 		var brokenReferences;
 		var options = {
-			workingDir: testBaseDir + 'moved'
+			workingDir: testBaseDir + topLevelDir
 		};
 		beforeEach(function(done) {
 			config.forceSet(options);
@@ -51,10 +50,35 @@ describe('Moved Files', function() {
 		it('Should find correct number of broken references', function() {
 			expect(brokenReferences).to.have.length(13);
 		});
-		it('Should correctly identify broken references', function() {
-			expect(brokenReferences[1].referencedFile).to.equal(rootDir + 'level2c/level3c/level1a/file-with-references.jsx');
-			expect(brokenReferences[1].referencingFiles[0]).to.equal(rootDir + 'level2c/level3c/file-with-references.js')
+		it('Should correctly identify broken references, referencers, and correct paths', function() {
+			var result1 = brokenReferences.find(function(brokenReference) {
+				if (brokenReference.referencedFile === rootDir + 'level1c/level2c/level1a/file-with-references.jsx') {
+					return true;
+				}
+			});
+			expect(result1).to.be.ok;
+			expect(result1.referencingFiles).to.contain(rootDir + 'level1c/level2c/file-with-references.js');
+			expect(result1.correctPath).to.equal(rootDir + 'level1a/file-with-references.jsx');
+
+			var result2 = brokenReferences.find(function(brokenReference) {
+				if (brokenReference.referencedFile.indexOf(rootDir + 'level1c/level2c/level1b/file4.js') !== -1) {
+					return true;
+				}
+			});
+			expect(result2).to.be.ok;
+			expect(result2.referencingFiles).to.contain(rootDir + 'level1c/level2c/file-with-references.js');
+			expect(result2.correctPath).to.equal(rootDir + 'level1a/file4.js');
+
+			var result3 = brokenReferences.find(function(brokenReference) {
+				if (brokenReference.referencedFile.indexOf(rootDir + 'level1c/level2c/level1b/level2b/file7.js') !== -1) {
+					return true;
+				}
+			});
+			expect(result3).to.be.ok;
+			expect(result3.referencingFiles).to.contain(rootDir + 'level1c/level2c/file-with-references.js');
+			expect(result3.correctPath).to.equal(rootDir + 'file7.js');
 		});
+
 	});
 
 });
