@@ -203,5 +203,5 @@ This software has not yet been tested on Windows.
 
 ### License
 
-[MIT](LICENSE)
+[MIT](LICENSE)  
 Copyright (c) 2016 [Robert Kendall](http://robertkendall.com)
