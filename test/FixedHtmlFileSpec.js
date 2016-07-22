@@ -39,7 +39,7 @@ describe('File Repair for Html', function() {
 			expect(files).to.have.length(1);
 			expect(files[0]).to.equal(pathOfFileWithReferences);
 		});
-		it.only('Should correctly update file content', function(done) {
+		it('Should correctly update file content', function(done) {
 			fs.readFile(pathOfFileWithReferences, 'utf8', function(err, content) {
 				expect(content).to.contain('<script src="file2.js"></script>');
 				expect(content).to.contain('<link href="../css/file1.css" rel="stylesheet" title="Default Style">');
