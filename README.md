@@ -39,7 +39,7 @@ When you type a reference into your code but don't know offhand the full path of
 
 Type this into your code:  
  `'./myFile.js'`  
-Run **reffix** and you'll see this when you reload the file:
+Run **reffix** and you'll see this when you reload the file:  
 `'../../full/path/of/myFile.js'`.
 
 ## Command Line Options
