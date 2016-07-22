@@ -17,7 +17,7 @@
       "(^|\\s)import\\s+([\\w\\-\\{\\}\\,\\*\\$\\s]+\\s+)?(['\"]){{valuePattern}}\\3",
       "(^|[^\\w-])require *\\( *(['\"]){{valuePattern}}\\2 *\\)"
     ],
-    "valuePattern": "\\.+/[^'\"\\s]+",
+    "valuePattern": "\\.+/[^'\"]+",
     "currentDirectoryPrefix": "./",
     "textToExclude": [
       "// *[^\\n]+\\n",
@@ -38,7 +38,7 @@
       "<script +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>",
       "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>"
     ],
-    "valuePattern": "[^'\"\\s:;#]+",
+    "valuePattern": "[^'\":;#]+",
     "currentDirectoryPrefix": ""
   }
 }

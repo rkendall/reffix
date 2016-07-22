@@ -63,13 +63,13 @@ describe('Moved HMTL Files', function() {
 			expect(result2.correctPath).to.equal(fullBasePath + 'file1.html');
 
 			var result3 = brokenReferences.find(function(brokenReference) {
-				if (brokenReference.referencedFile.indexOf(fullBasePath + 'level1/file1.js') !== -1) {
+				if (brokenReference.referencedFile.indexOf(fullBasePath + 'level1/file with spaces in name.js') !== -1) {
 					return true;
 				}
 			});
 			expect(result3).to.be.ok;
 			expect(result3.referencingFiles).to.contain(fullBasePath + 'level1/index.html');
-			expect(result3.correctPath).to.equal(fullBasePath + 'file1.js');
+			expect(result3.correctPath).to.equal(fullBasePath + 'file with spaces in name.js');
 
 		});
 

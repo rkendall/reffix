@@ -26,7 +26,7 @@ describe('Configuration', function() {
 		it('Should change modes correctly', function() {
 			config.setMode('html');
 			var settings = config.get();
-			expect(settings.referencingFileFilter).to.have.length(1);
+			expect(settings.referencingFileFilter).to.have.length(2);
 			expect(settings.referencingFileFilter).to.contain('*.html');
 			expect(settings.workingDirectory).to.equal(process.cwd());
 		});
