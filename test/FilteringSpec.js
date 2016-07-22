@@ -12,7 +12,7 @@ describe('Filtering', function() {
 		var files;
 		var options = {
 			workingDirectory: testWorkingDir,
-			"directoryFilter": [
+			"directoriesToExclude": [
 				".*",
 				"node_modules"
 			],
@@ -47,7 +47,7 @@ describe('Filtering', function() {
 		var files;
 		var options = {
 			workingDirectory: testWorkingDir,
-			"directoryFilter": [
+			"directoriesToExclude": [
 			],
 			"referencingFileFilter": [
 				"*1.*"
@@ -78,7 +78,7 @@ describe('Filtering', function() {
 		var files;
 		var options = {
 			workingDirectory: testWorkingDir,
-			"directoryFilter": [
+			"directoriesToExclude": [
 			],
 			"referencingFileFilter": [
 				"!foo*.*"

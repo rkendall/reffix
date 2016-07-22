@@ -1,7 +1,7 @@
 
 # reffix
 
-**Reference Fixer** -- the easy fix for broken file path references. Analyze and batch repair broken references across an entire project. [Prerelease]
+**Reference Fixer** -- the easy fix for broken file path references. Analyze and batch-repair broken references across an entire project. [Prerelease]
 
 ## Features
 
@@ -49,17 +49,16 @@ Each option has an abbreviated (`-o`) and a full (`--option`) version that can b
 ### Error Correction
 
 - `-e --errors` - List broken references and files containing them. This option is engaged by default if none of the reporting options below are engaged.
-- `-m default` or `--mode default` - Fix `import` and `require` statements in JavaScript files. This is the default mode if `-m` is omitted.  
-- `-m html` or `--mode html` - Fix broken `href` and `src` attributes in HTML files.  
+- `-m --mode` - The type of references to work with. Specify the argument `default` to parse `import` and `require` statements in JavaScript files. Specify `html` to parse `href` and `src` attributes in HTML files. If `-m` is omitted, the `default` mode will be used.  
 - `-n --no-prompts` - Fix errors without prompting (unless overridden by `-r`).
 - `-r --report-only` - Don't fix errors, just show the report. (Overrides `-p`.)
 
 ### Filtering
 
-All lists of globs, as described below, must be separated by commas or spaces and enclosed in quotes.
+All lists of names or globs, as described below, must be separated by commas. If a pattern contains a `*` it should be should be enclosed in quotes, or the `*` should be escaped (`\*`).
 
-- `-d --dir <directory_globs>` - Specify a list of directory names or globs to exclude from parsing. The names are added to the default list of `'.*,node_modules,build'`.
-- `-f --files <source_globs> [target_globs]` - Specify a glob or list of globs to filter the source (referencing) and target (referenced) files that are analyzed and repaired. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx' '*.js,*.jsx,*.json'`. `source_globs` is required. If you wish to filter only target files, enter `''` for `source_globs`.
+- `-d --dir <directory_globs>` - Exclude specified directories from parsing. Provide a list of directory names or globs to exclude. The names are added to the default list of `'.*,node_modules,build'`.
+- `-f --files <source_globs> [target_globs]` - Filter the files that are analyzed and repaired. Provide a glob or list of globs to specify the source (referencing) and target (referenced) files that should be included or excluded. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx' '*.*'`. `source_globs` is required. If you wish to filter only target files, enter `''` for `source_globs`.
 
 ### Reporting
 
@@ -87,29 +86,29 @@ When one of the following switches is set, you won't be prompted to repair files
 
 ## Examples
 
-`$ ref`
+`$ ref`  
 List all broken references and prompt you to fix them.
 
-`$ ref ../`
+`$ ref ../`  
 Begin parsing in the parent directory and list all broken references and prompt you to fix them.
 
 `$ ref -ret -d 'test' -f '!*Test.js,!*Spec.js'`  
 Don't repair files, list errors and all references (targets), and filter out test files and directories.
 
-`$ ref -u -f '' '**/examples/*Widget.*,**/examples/*Module.*' -- ../src`
+`$ ref -u -f '' '**/examples/*Widget.*,**/examples/*Module.*' -- ../src`  
 Repair files without prompting. Fix only references to widgets and modules in `examples` directory. Set the working directory to `../src`.
 
 ## Customization
 
 ### Configuration File
 
-You can also specify filtering and parsing options by creating a `.reffixrc` file. Place it in your `$home` or `/etc` directory, or specify its path using the command-line option `-c|--config`. The file will be merged into the following default settings and should use the same JSON format.
+You can also specify filtering and parsing options by creating a `.reffixrc` file. Place it in your `$home` or `/etc` directory, or specify its path using the command-line option `-c --config`. The file will be merged into the following default settings and should use the same JSON format. You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride.
 
 ```javascript
 {
   "default": {
     "workingDirectory": ".",
-    "directoryFilter": [
+    "directoriesToExclude": [
       ".*",
       "node_modules",
       "build"
@@ -119,23 +118,23 @@ You can also specify filtering and parsing options by creating a `.reffixrc` fil
       "*.jsx"
     ],
     "referencedFileFilter": [
-      "*.js",
-      "*.jsx",
-      "*.json"
+      "*.*"
     ],
     "searchPatterns": [
-      "(^|\\s)import +([\\w\\-\\{\\}\\, \\*\\$]+ )?(['\"]){{valuePattern}}\\3",
+      "(^|\\s)import\\s+([\\w\\-\\{\\}\\,\\*\\$\\s]+\\s+)?(['\"]){{valuePattern}}\\3",
       "(^|[^\\w-])require *\\( *(['\"]){{valuePattern}}\\2 *\\)"
     ],
     "valuePattern": "\\.+/[^'\"\\s]+",
-    "excludeText": [
+    "currentDirectoryPrefix": "./",
+    "textToExclude": [
       "// *[^\\n]+\\n",
       "/\\*[\\s\\S]+?\\*/"
     ]
   },
   "html": {
     "referencingFileFilter": [
-      "*.html"
+      "*.html",
+      "*.js"
     ],
     "referencedFileFilter": [
       "*.*"
@@ -146,17 +145,33 @@ You can also specify filtering and parsing options by creating a `.reffixrc` fil
       "<script +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>",
       "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>"
     ],
-    "valuePattern": "[^'\"\\s:;#]+"
+    "valuePattern": "[^'\"\\s:;#]+",
+    "currentDirectoryPrefix": ""
   }
 }
 ```
 
-You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride. For example, adding the following to a `.reffixrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
+#### Configuration Options
+
+Most of the options in the configuration file are equivalent to command-line options.
+
+- `workingDirectory` - Same as the `[working_directory]` argument on the command line.
+- `directoriesToExclude` - Same as command-line `--dir`.
+- `referencingFileFilter` - Same as the `<source_globs>` argument for the command-line `--file` option.
+- `referencedFileFilter` - Same as the `[target_globs]` argument for the command-line `--file` option.
+- `searchPatterns` - An array of regular expression strings used to find references. The `{{valuePattern}}` variable represents the file path to be validated.
+- `valuePattern` - A regular expression string to replace the `{{valuePattern}}` variable in `searchPatterns`.
+- `currentDirectoryPrefix` - A prefix (such as `./`) to add at the beginning of a path to represent that it is in the current working directory.
+- `textToExclude` An array of regular expression strings specifying text (such as comments) to exclude from parsing.
+
+#### Sample Configuration File
+
+Adding the following to a `.reffixrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
 
 ```javascript
 {
   "default": {
-    "directoryFilter": [
+    "directoriesToExclude": [
       ".*",
       "node_modules",
       "build",
@@ -172,13 +187,16 @@ You can add as many modes as you want and select them from the command line usin
       "*.js"
     ],
     "searchPatterns": [
-      "<link +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*>",
-      "<a +[^>]*href=(['\"]){{valuePattern}}\\1[^>]*>",
-      "<script +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>",
-      "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>"
-    ],
-    "valuePattern": "[^'\"\\s:;#]+"
+      "(^|\\s)import\\s+([\\w\\-\\{\\}\\,\\*\\$\\s]+\\s+)?(['\"]){{valuePattern}}\\3",
+    ]
   }
 }
 ```
-Modify `searchPatterns` and `valuePattern` to change the types of references that are parsed and repaired.
+
+### Windows
+
+Has not yet been tested on Windows.
+
+### License
+
+MIT

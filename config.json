@@ -1,7 +1,7 @@
 {
   "default": {
     "workingDirectory": ".",
-    "directoryFilter": [
+    "directoriesToExclude": [
       ".*",
       "node_modules",
       "build"
@@ -19,7 +19,7 @@
     ],
     "valuePattern": "\\.+/[^'\"\\s]+",
     "currentDirectoryPrefix": "./",
-    "excludeText": [
+    "textToExclude": [
       "// *[^\\n]+\\n",
       "/\\*[\\s\\S]+?\\*/"
     ]
