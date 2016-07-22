@@ -128,7 +128,7 @@ You can also specify filtering and parsing options by creating a `.reffixrc` fil
       "(^|\\s)import\\s+([\\w\\-\\{\\}\\,\\*\\$\\s]+\\s+)?(['\"]){{valuePattern}}\\3",
       "(^|[^\\w-])require *\\( *(['\"]){{valuePattern}}\\2 *\\)"
     ],
-    "valuePattern": "\\.+/[^'\"\\s]+",
+    "valuePattern": "\\.+/[^'\"]+",
     "currentDirectoryPrefix": "./",
     "textToExclude": [
       "// *[^\\n]+\\n",
@@ -149,7 +149,7 @@ You can also specify filtering and parsing options by creating a `.reffixrc` fil
       "<script +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>",
       "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>"
     ],
-    "valuePattern": "[^'\"\\s:;#]+",
+    "valuePattern": "[^'\":;#]+",
     "currentDirectoryPrefix": ""
   }
 }
@@ -170,7 +170,7 @@ Many of the options in the configuration file are equivalent to command-line opt
 
 #### Sample Configuration File
 
-Adding the following to a `.reffixrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
+Adding the following to a `.reffixrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files through an `import` statement.
 
 ```javascript
 {
