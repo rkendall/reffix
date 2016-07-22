@@ -1,7 +1,7 @@
 
 # reffix
 
-**Reference Fixer** -- the easy fix for broken file path references. Analyze and batch-repair broken references across an entire project.
+**Reference Fixer** -- the easy fix for broken file path references. Analyze and batch-repair broken references across an entire project from the command line.
 
 ## Features
 
