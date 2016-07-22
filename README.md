@@ -20,9 +20,9 @@ Clone the project, then from the project's root directory run
 
 ## Command Line Usage
 
-`$ ref`
-or
-`$ reffix`
+`$ ref`  
+or  
+`$ reffix`  
 
 By default, reffix will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to update the files to fix them. Type `y` or just hit `Enter` to make the repairs. All reports list absolute paths, but relative paths will be used to update the files.
 

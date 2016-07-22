@@ -56,7 +56,7 @@ describe('Configuration', function() {
 
 		beforeEach(function() {
 			config.reset();
-			var pathOfRcFile = path.join(process.cwd(), 'test/files/.refixrc');
+			var pathOfRcFile = path.join(process.cwd(), 'test/files/.reffixrc');
 			config.set(null, pathOfRcFile);
 		});
 		afterEach(function() {
