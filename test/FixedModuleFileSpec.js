@@ -9,11 +9,11 @@ var updater = require('../lib/updater');
 
 var filesToMove = require('./fixtures/moduleFilesToMove.json');
 
-describe('File Repair', function() {
+describe('File Repair for Modules', function() {
 	var testBaseDir = 'test/files/modules/moved';
 	var testDir = 'modules';
 	var options = {
-		workingDir: testBaseDir
+		workingDirectory: testBaseDir
 	};
 	var baseDir = path.resolve(testBaseDir) + '/';
 	before(function(done) {

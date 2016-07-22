@@ -17,18 +17,18 @@ describe('Configuration', function() {
 		it('Should load correct value for working dir', function() {
 			var workingDir = path.join(process.cwd(), 'test/files/modules');
 			var options = {
-				workingDir: workingDir
+				workingDirectory: workingDir
 			};
 			config.set(options);
 			var settings = config.get();
-			expect(settings.workingDir).to.equal(workingDir);
+			expect(settings.workingDirectory).to.equal(workingDir);
 		});
 		it('Should change modes correctly', function() {
 			config.setMode('html');
 			var settings = config.get();
 			expect(settings.referencingFileFilter).to.have.length(1);
 			expect(settings.referencingFileFilter).to.contain('*.html');
-			expect(settings.workingDir).to.equal(process.cwd());
+			expect(settings.workingDirectory).to.equal(process.cwd());
 		});
 		it('Should accept new file filter', function() {
 			var options = {
@@ -70,7 +70,7 @@ describe('Configuration', function() {
 			expect(settings.referencingFileFilter).to.contain('test.*');
 			expect(settings.referencedFileFilter).to.have.length(1);
 			expect(settings.referencedFileFilter).to.contain('test_test.*');
-			expect(settings.workingDir).to.equal(process.cwd());
+			expect(settings.workingDirectory).to.equal(process.cwd());
 		});
 		it('Should not change default settings', function() {
 			config.setMode('default');
@@ -78,7 +78,7 @@ describe('Configuration', function() {
 			expect(settings.referencingFileFilter).to.have.length(2);
 			expect(settings.referencingFileFilter).to.contain('*.js');
 			expect(settings.referencingFileFilter).to.contain('*.jsx');
-			expect(settings.workingDir).to.equal(process.cwd());
+			expect(settings.workingDirectory).to.equal(process.cwd());
 		});
 
 	})

@@ -108,7 +108,7 @@ You can also specify filtering and parsing options by creating a `.reffixrc` fil
 ```javascript
 {
   "default": {
-    "workingDir": ".",
+    "workingDirectory": ".",
     "directoryFilter": [
       ".*",
       "node_modules",

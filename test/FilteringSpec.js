@@ -11,7 +11,7 @@ describe('Filtering', function() {
 	describe('Should filter directories', function() {
 		var files;
 		var options = {
-			workingDir: testWorkingDir,
+			workingDirectory: testWorkingDir,
 			"directoryFilter": [
 				".*",
 				"node_modules"
@@ -46,7 +46,7 @@ describe('Filtering', function() {
 	describe('Should filter files by name', function() {
 		var files;
 		var options = {
-			workingDir: testWorkingDir,
+			workingDirectory: testWorkingDir,
 			"directoryFilter": [
 			],
 			"referencingFileFilter": [
@@ -77,7 +77,7 @@ describe('Filtering', function() {
 	describe('Should filter files by excluding sources', function() {
 		var files;
 		var options = {
-			workingDir: testWorkingDir,
+			workingDirectory: testWorkingDir,
 			"directoryFilter": [
 			],
 			"referencingFileFilter": [

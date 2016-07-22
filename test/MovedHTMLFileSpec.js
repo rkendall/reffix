@@ -24,7 +24,7 @@ describe('Moved HMTL Files', function() {
 		var brokenReferences;
 		var options = {
 			mode: 'html',
-			workingDir: testBaseDir
+			workingDirectory: testBaseDir
 		};
 		beforeEach(function(done) {
 			config.reset();

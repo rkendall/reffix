@@ -23,7 +23,7 @@ describe('Moved Files', function() {
 	describe('Broken References', function() {
 		var brokenReferences;
 		var options = {
-			workingDir: testBaseDir
+			workingDirectory: testBaseDir
 		};
 		beforeEach(function(done) {
 			config.reset();

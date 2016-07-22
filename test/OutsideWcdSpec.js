@@ -11,7 +11,7 @@ describe('Outside CWD', function() {
 	describe('References', function() {
 		var files;
 		var options = {
-			workingDir: testWorkingDir
+			workingDirectory: testWorkingDir
 		};
 		beforeEach(function(done) {
 			config.reset();

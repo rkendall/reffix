@@ -12,7 +12,7 @@ describe('Original HTML Files', function() {
 		var files;
 		var options = {
 			mode: 'html',
-			workingDir: testWorkingDir
+			workingDirectory: testWorkingDir
 		};
 		beforeEach(function(done) {
 			config.reset();
@@ -32,13 +32,13 @@ describe('Original HTML Files', function() {
 			expect(Object.keys(files.referencingFiles)).to.have.length(1);
 		});
 		it('Should get correct file paths', function() {
-			expect(files.referencingFiles).to.have.property(path.resolve(options.workingDir, 'index.html'));
+			expect(files.referencingFiles).to.have.property(path.resolve(options.workingDirectory, 'index.html'));
 		});
 		it('Should get correct number of references within files', function() {
 			expect(Object.keys(files.referencedFiles)).to.have.length(5);
 		});
 		it('Should get correct file paths', function() {
-			expect(files.referencedFiles).to.have.property(path.resolve(options.workingDir, 'level1/file2.js'));
+			expect(files.referencedFiles).to.have.property(path.resolve(options.workingDirectory, 'level1/file2.js'));
 		});
 	});
 
@@ -46,7 +46,7 @@ describe('Original HTML Files', function() {
 		var files;
 		var options = {
 			mode: 'html',
-			workingDir: testWorkingDir,
+			workingDirectory: testWorkingDir,
 			referencedFileFilter: ['*.css']
 		};
 		beforeEach(function(done) {
@@ -64,7 +64,7 @@ describe('Original HTML Files', function() {
 	describe('Broken References', function() {
 		var brokenReferences;
 		var options = {
-			workingDir: testWorkingDir
+			workingDirectory: testWorkingDir
 		};
 		beforeEach(function(done) {
 			config.forceSet(options);
