@@ -1,31 +1,49 @@
 {
-  "name": "refix",
+  "name": "reffix",
   "version": "0.1.0",
-  "description": "Update broken references after files are moved.",
+  "description": "Analyzes and repairs broken file path references in a project.",
+  "keywords": [
+    "references",
+    "links",
+    "dependencies",
+    "broken references",
+    "broken links",
+    "broken dependencies",
+    "fix links",
+    "fix references",
+    "require",
+    "import",
+    "analyze dependencies"
+  ],
+  "author": "Robert Kendall <kendall@wordcircuits.com> (http://robertkendall.com)",
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/rkendall/reffix.git"
+  },
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start-silent": "node index.js -u",
     "test": "./node_modules/.bin/mocha "
   },
   "bin": {
+    "reffix": "./index.js",
     "ref": "./index.js"
   },
-  "author": "Robert Kendall",
-  "license": "ISC",
+  "bugs": {
+    "email": "kendall@wordcircuits.com"
+  },
   "dependencies": {
     "cli-color": "~1.1.0",
     "commander": "^2.9.0",
     "deepcopy": "^0.6.3",
     "execa": "^0.4.0",
-    "git-status": "^1.0.1",
     "inquirer": "^1.0.3",
     "mime": "^1.3.4",
     "minimatch": "^3.0.2",
     "q": "^1.4.1",
     "rc": "^1.1.6",
     "readdirp": "^2.0.1",
-    "simple-git": "^1.43.0",
     "xregexp": "^3.1.1"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 
-# refix
+# reffix
 
 **Reference Fixer** -- the easy fix for broken file path references. Analyze and batch repair broken references across an entire project. [Prerelease]
 
@@ -21,20 +21,22 @@ Clone the project, then from the project's root directory run
 ## Command Line Usage
 
 `$ ref`
+or
+`$ reffix`
 
-By default, refix will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to update the files to fix them. Type `y` or just hit `Enter` to make the repairs. All reports list absolute paths, but relative paths will be used to update the files.
+By default, reffix will generate a report of broken module references (`require` and `import` statements) by recursing through all the `.js`, `.jsx`, and `.json` files in the directory in which it is launched. It will then list the broken and corrected paths and prompt you to update the files to fix them. Type `y` or just hit `Enter` to make the repairs. All reports list absolute paths, but relative paths will be used to update the files.
 
 ![Command line output](img/example1.png)
 
-If git version control is available for the files being parsed, `refix` will use data from git status to fix references broken by renaming or moving files. If git is unavailable, the program can repair references broken as a result of files being moved but not as a result of files being renamed. If a broken reference refers to a filename that is shared by mutliple files in different locations, refix may not be able to determine which path to use and will prompt you to select the correct filepath.
+If git version control is available for the files being parsed, **reffix** will use data from git status to fix references broken by renaming or moving files. If git is unavailable, the program can repair references broken as a result of files being moved but not as a result of files being renamed. If a broken reference refers to a filename that is shared by mutliple files in different locations, reffix may not be able to determine which path to use and will prompt you to select the correct filepath.
 
 ![Prompt to choose file](img/example2.png)
 
- Using the command-line options described below, you can generate reports showing which files contain references and which files they refer to. You can filter the searches via command line options or configuration settings in a `.refixrc` configuration file.
+ Using the command-line options described below, you can generate reports showing which files contain references and which files they refer to. You can filter the searches via command line options or configuration settings in a `.reffixrc` configuration file.
  
 ## Path Expansion
  
-Use `refix` to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./myFile.js'` and run `refix` to update the file. When you reload the page in your editor, the path will be expanded to the correct relative reference -- for example: `'../../full/path/of/myFile.js'`.
+Use **reffix** to automatically expand references you type into files. If you don't know the full path of a referenced file, type in `'./myFile.js'` and run **reffix** to update the file. When you reload the page in your editor, the path will be expanded to the correct relative reference -- for example: `'../../full/path/of/myFile.js'`.
 
 ## Command Line Options
 
@@ -101,7 +103,7 @@ Repair files without prompting. Fix only references to widgets and modules in `e
 
 ### Configuration File
 
-You can also specify filtering and parsing options by creating a `.refixrc` file. Place it in your `$home` or `/etc` directory, or specify its path using the command-line option `-c|--config`. The file will be merged into the following default settings and should use the same JSON format.
+You can also specify filtering and parsing options by creating a `.reffixrc` file. Place it in your `$home` or `/etc` directory, or specify its path using the command-line option `-c|--config`. The file will be merged into the following default settings and should use the same JSON format.
 
 ```javascript
 {
@@ -149,7 +151,7 @@ You can also specify filtering and parsing options by creating a `.refixrc` file
 }
 ```
 
-You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride. For example, adding the following to a `.refixrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
+You can add as many modes as you want and select them from the command line using the `-m` switch. Each new mode will be merged with `default`, so you need only include the properties you wish to overrride. For example, adding the following to a `.reffixrc` file will exclude all `test` and `qa` directories from parsing, and it will allow you to use the command-line option `-m myMode` to search for only `*.jsx` files that reference `*.js` files.
 
 ```javascript
 {
