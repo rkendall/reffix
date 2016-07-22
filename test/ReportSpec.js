@@ -8,7 +8,7 @@ describe('Reports', function() {
 	var filesCheckedReport;
 	var referencingFilesReport;
 	var options = {
-		workingDir: 'test/fixtures/modules/original',
+		workingDir: 'test/files/modules/original',
 		referencingFileFilter: ['*.js'],
 		referencedFileFilter: ['*.js']
 	};

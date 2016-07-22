@@ -15,7 +15,7 @@ describe('Configuration', function() {
 		});
 
 		it('Should load correct value for working dir', function() {
-			var workingDir = path.join(process.cwd(), 'test/fixtures/modules');
+			var workingDir = path.join(process.cwd(), 'test/files/modules');
 			var options = {
 				workingDir: workingDir
 			};
@@ -56,7 +56,7 @@ describe('Configuration', function() {
 
 		beforeEach(function() {
 			config.reset();
-			var pathOfRcFile = path.join(process.cwd(), 'test/fixtures/.refixrc');
+			var pathOfRcFile = path.join(process.cwd(), 'test/files/.refixrc');
 			config.set(null, pathOfRcFile);
 		});
 		afterEach(function() {

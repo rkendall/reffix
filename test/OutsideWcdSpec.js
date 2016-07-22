@@ -6,7 +6,7 @@ var parser = require('../lib/parser');
 
 describe('Outside CWD', function() {
 
-	var testWorkingDir = 'test/fixtures/ref-outside-cwd';
+	var testWorkingDir = 'test/files/ref-outside-cwd';
 
 	describe('References', function() {
 		var files;
@@ -23,7 +23,7 @@ describe('Outside CWD', function() {
 		});
 		it('Should find file outside of CWD', function() {
 			expect(Object.keys(files.referencedFiles)).to.have.length(1);
-			expect(files.referencedFiles).to.have.property(path.join(process.cwd(), 'test/fixtures/outside-cwd/file1.js'));
+			expect(files.referencedFiles).to.have.property(path.join(process.cwd(), 'test/files/outside-cwd/file1.js'));
 		});
 
 	});

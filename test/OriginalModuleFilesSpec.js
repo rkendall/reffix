@@ -6,7 +6,7 @@ var parser = require('../lib/parser');
 
 describe('Original Files', function() {
 
-	var testWorkingDir = 'test/fixtures/modules/original';
+	var testWorkingDir = 'test/files/modules/original';
 
 	describe('References', function() {
 		var files;
@@ -31,9 +31,9 @@ describe('Original Files', function() {
 			expect(Object.keys(files.referencingFiles)).to.have.length(2);
 		});
 		it('Should get correct file paths', function() {
-			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'root/file1.json'));
-			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'root/level1a/file-with-references.jsx'));
-			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'root/level1a/level2a/level3a/file8.js'));
+			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'file1.json'));
+			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'level1a/file-with-references.jsx'));
+			expect(files.existingFiles).to.have.property(path.join(process.cwd(), options.workingDir, 'level1a/level2a/level3a/file8.js'));
 		});
 		it('Should get correct number of references within files', function() {
 			expect(Object.keys(files.referencedFiles)).to.have.length(12);

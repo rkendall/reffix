@@ -7,23 +7,24 @@ var fileMover = require('./helpers/fileMover');
 var config = require('../lib/config');
 var updater = require('../lib/updater');
 
+var filesToMove = require('./fixtures/moduleFilesToMove.json');
+
 describe('File Repair', function() {
-	var testBaseDir = 'test/fixtures/modules/';
-	var topLevelDir = 'fixed';
+	var testBaseDir = 'test/files/modules/moved';
+	var testDir = 'modules';
 	var options = {
-		workingDir: testBaseDir + topLevelDir
+		workingDir: testBaseDir
 	};
-	var baseDir = path.join(process.cwd(), options.workingDir) + '/';
-	var rootDir = path.join(baseDir, 'root') + '/';
+	var baseDir = path.resolve(testBaseDir) + '/';
 	before(function(done) {
-		fileMover.moveFiles(topLevelDir, done);
+		fileMover.moveFiles(testDir, filesToMove, done);
 	});
 	after(function(done) {
-		fileMover.deleteMovedFiles(topLevelDir, done);
+		fileMover.deleteMovedFiles(testDir, done);
 	});
 	describe('References', function() {
 		var files;
-		var pathOfFileWithReferences = path.join(process.cwd(), 'test/fixtures/modules/fixed/root/level1c/level2c/file-with-references.js');
+		var pathOfFileWithReferences = path.join(baseDir, 'level1c/level2c/file-with-references.js');
 		beforeEach(function(done) {
 			config.forceSet(options);
 			updater.fixReferences().then(function(result) {
@@ -33,7 +34,7 @@ describe('File Repair', function() {
 		});
 		it('Should fix correct files', function() {
 			expect(files).to.have.length(2);
-			expect(files[0]).to.equal(path.join(process.cwd(), 'test/fixtures/modules/fixed/root/level1a/file-with-references.jsx'));
+			expect(files[0]).to.equal(path.join(baseDir, 'level1a/file-with-references.jsx'));
 			expect(files[1]).to.equal(pathOfFileWithReferences);
 		});
 		it('Should correctly update file content', function(done) {

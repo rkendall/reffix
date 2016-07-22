@@ -1,0 +1,14 @@
+[
+  [
+    "file-with-references.js",
+    "level1c/level2c/file-with-references.js"
+  ],
+  [
+    "level1b/file4.js",
+    "level1a/file4.js"
+  ],
+  [
+    "level1b/level2b/file7.js",
+    "file7.js"
+  ]
+]

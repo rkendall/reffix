@@ -6,7 +6,7 @@ var parser = require('../lib/parser');
 
 describe('Filtering', function() {
 
-	var testWorkingDir = 'test/fixtures/filtering';
+	var testWorkingDir = 'test/files/filtering';
 
 	describe('Should filter directories', function() {
 		var files;
@@ -70,7 +70,7 @@ describe('Filtering', function() {
 		it('Should get correct number of referencing/referenced files', function() {
 			expect(Object.keys(files.referencingFiles)).to.have.length(3);
 			expect(Object.keys(files.referencedFiles)).to.have.length(2);
-			expect(Object.keys(files.referencedFiles)).to.not.contain(path.join(process.cwd(), 'test/fixtures/filtering/foo_file1.jsx'));
+			expect(Object.keys(files.referencedFiles)).to.not.contain(path.join(process.cwd(), 'test/files/filtering/foo_file1.jsx'));
 		});
 	});
 

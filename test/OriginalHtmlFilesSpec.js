@@ -6,7 +6,7 @@ var parser = require('../lib/parser');
 
 describe('Original HTML Files', function() {
 
-	var testWorkingDir = 'test/fixtures/html/original';
+	var testWorkingDir = 'test/files/html/original';
 
 	describe('References', function() {
 		var files;
@@ -36,7 +36,7 @@ describe('Original HTML Files', function() {
 		});
 		it('Should get correct number of references within files', function() {
 			expect(Object.keys(files.referencedFiles)).to.have.length(5);
-		})
+		});
 		it('Should get correct file paths', function() {
 			expect(files.referencedFiles).to.have.property(path.resolve(options.workingDir, 'level1/file2.js'));
 		});

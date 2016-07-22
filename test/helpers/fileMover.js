@@ -5,36 +5,29 @@ var mv = require('mv');
 
 var fileMover = {
 
-	testBaseDir: 'test/fixtures/modules/',
-
-	moveFiles: function(dir, done) {
-		var self = this;
+	moveFiles: function(dir, files, done) {
 		var workingDir = this.getFullTestPath(dir);
-		var rootDir = path.join(workingDir, 'root') + '/';
-		return Q.nfcall(fse.emptyDir, workingDir)
+		var movedDir = workingDir + 'moved/';
+		return Q.nfcall(fse.emptyDir, movedDir)
 			.then(function() {
 				return Q.nfcall(fse.copy,
-					self.testBaseDir + 'original',
-					workingDir
+					workingDir + 'original/',
+					movedDir
 				);
 			})
 			.then(function() {
 				console.log('Test files copied');
-				return Q.all([
-					// Move files
-					Q.nfcall(fse.move,
-						rootDir + 'file-with-references.js',
-						rootDir + 'level1c/level2c/file-with-references.js'
-					),
-					Q.nfcall(fse.move,
-						rootDir + 'level1b/file4.js',
-						rootDir + 'level1a/file4.js'
-					),
-					Q.nfcall(fse.move,
-						rootDir + 'level1b/level2b/file7.js',
-						rootDir + 'file7.js'
+				var fileMovePromises = files.map(function(filenames) {
+					return Q.nfcall(fse.move,
+						movedDir + filenames[0],
+						movedDir + filenames[1]
 					)
-				]);
+					.catch(function(err) {
+						console.error(err.message, err.stack);
+						return err;
+					});
+				});
+				return Q.all(fileMovePromises);
 			})
 			.then(function() {
 				console.log('File structure prepared for tests');
@@ -47,8 +40,8 @@ var fileMover = {
 	},
 
 	deleteMovedFiles: function(dir, done) {
-		var workingDir = this.getFullTestPath(dir);
-		fse.remove(workingDir, function(err) {
+		var movedDir = this.getFullTestPath(dir) + 'moved';
+		fse.remove(movedDir, function(err) {
 			if (!err) {
 				console.log('Test files removed');
 				done();
@@ -61,7 +54,7 @@ var fileMover = {
 	},
 
 	getFullTestPath: function(dir) {
-		return path.resolve(this.testBaseDir, dir) + '/';
+		return path.resolve('test/files/', dir) + '/';
 	}
 
 };
