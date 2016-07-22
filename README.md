@@ -9,7 +9,7 @@
 - Fixes broken `src` and `href` attributes in HTML files
 - Customizable to support other types of references
 - Expands references you type into your files
-- Generates detailed reports about all the filepath dependencies in a project
+- Generates detailed reports about all the file path dependencies in a project
 - Comprehensive filtering options
 - Extremely fast asynchronous performance
 
@@ -35,7 +35,7 @@ If git version control is available for the files being parsed, **reffix** will 
  
 ## Path Expansion
  
-When you don't know the full path of a referenced file, use **reffix** to automatically expand filenames you type into your code into full-path references.
+When you type a reference into your code but don't know offhand the full path of the relevant file, use **reffix** to automatically expand the filename into a full-path reference.
 
 Type this into your code:  
  `'./myFile.js'`  
@@ -48,21 +48,22 @@ Run **reffix** and you'll see this when you reload the file:
 
 `ref [options] [--] [working_directory]`
 
-Each option has an abbreviated (`-o`) and a full (`--option`) version that can be used interchangeably. `working_directory` is the starting path to use for parsing files. It defaults to the directory from which the command is executed. If `working_directory` is preceded by option arguments, it must be immediately preceded by `--`.
+Each option has a short (`-o`) and a long (`--option`) version that you can use interchangeably. Short options can be combined into a single argument (for example, `-ste`). `working_directory` is the starting path to use for parsing files. It defaults to the directory from which the command is executed. If `working_directory` is preceded by option arguments, it must be immediately preceded by `--`.
 
 ### Error Correction
 
-- `-e --errors` - List broken references and files containing them. This option is engaged by default if none of the reporting options below are engaged.
+- `-e --errors` - List broken references and files containing them, then prompt to fix the errors. This option is engaged by default if none of the reporting options below are engaged.
 - `-m --mode` - The type of references to work with. Specify the argument `default` to parse `import` and `require` statements in JavaScript files. Specify `html` to parse `href` and `src` attributes in HTML files. If `-m` is omitted, the `default` mode is used.  
 - `-n --no-prompts` - Fix errors without prompting (unless overridden by `-r`).
-- `-r --report-only` - Don't fix errors, just show the report.
+- `-r --report-only` - Don't fix errors, just show the report. (Overrides `-n`.)
 
 ### Filtering
 
-All lists of names or globs, as described below, must be separated by commas. If a pattern contains a `*` it should be should be enclosed in quotes, or the `*` should be escaped (`\*`).
+All lists of names or globs, as described below, must be separated by commas. If a pattern contains a `*`, the pattern should be should be enclosed in quotes, or the `*` should be escaped (`\*`).
 
 - `-d --dirs <directory_globs>` - Exclude specified directories from parsing. Provide a list of directory names or globs to exclude. The names are added to the default list of `'.*,node_modules,build'`.
 - `-f --files <source_globs> [target_globs]` - Filter the files that are analyzed and repaired. Provide a glob or list of globs to specify the source (referencing) and target (referenced) files that should be included or excluded. For example, `'!*Spec.js,*.js'`. Overrides the default filter, which is `'*.js,*.jsx' '*.*'`. `source_globs` is required. If you wish to filter only target files, enter `''` for `source_globs`.
+- `-c --config <filepath>` - Load a custom configuration file located at the specified path. This can specify more-advanced parsing options (see below).
 
 ### Reporting
 
@@ -73,13 +74,14 @@ When one of the following switches is set, you won't be prompted to repair files
 
 ### Help
 
+- `-V --version` - Displays the software version.
 - `-h --help` - Produces the following display.
 ```
 -h, --help                                 output usage information
 -V, --version                              output the version number
--c, --config [filepath]                    path of custom configuration file
+-c, --config <filepath>                    path of custom configuration file
 -m, --mode <default|html>                  type of references to look for, JS import/require (default) or HTML href/src (html)
--f, --files <source_globs> [target_globs]  filter the source (referencing) and target (referenced) files parsed (e.g., '*1.js,*2.js' 'file.js'
+-f, --files <source_globs> [target_globs]  filter the source (referencing) and target (referenced) files parsed (e.g., '*1.js,*2.js' 'file.js')
 -d, --dirs <directory_globs>               exclude from sources the specified directories (e.g., 'test,bin')
 -e, --errors                               list broken references and prompt to fix them
 -s, --sources                              list files (sources of references) containing references to other files
@@ -166,7 +168,7 @@ Many of the options in the configuration file are equivalent to command-line opt
 - `searchPatterns` - An array of regular expression strings used to find references. The `{{valuePattern}}` variable represents the file path to be validated.
 - `valuePattern` - A regular expression string to replace the `{{valuePattern}}` variable in `searchPatterns`.
 - `currentDirectoryPrefix` - A prefix (such as `./`) to add at the beginning of a path to represent that it is in the current working directory.
-- `textToExclude` An array of regular expression strings specifying text (such as comments) to exclude from parsing.
+- `textToExclude` - An array of regular expression strings specifying text (such as comments) to exclude from parsing.
 
 #### Sample Configuration File
 
