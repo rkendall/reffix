@@ -5,12 +5,15 @@
   "keywords": [
     "references",
     "links",
+    "paths",
     "dependencies",
     "broken references",
+    "broken paths",
     "broken links",
     "broken dependencies",
     "fix links",
     "fix references",
+    "fix paths",
     "require",
     "import",
     "analyze dependencies"
