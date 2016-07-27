@@ -39,6 +39,9 @@
       "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>"
     ],
     "valuePattern": "[^'\":;#]+",
-    "currentDirectoryPrefix": ""
+    "currentDirectoryPrefix": "",
+    "textToExclude": [
+      "<!--[\\s\\S]+?-->"
+    ]
   }
 }

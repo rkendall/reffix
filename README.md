@@ -152,7 +152,10 @@ You can also specify filtering and parsing options by creating a `.reffixrc` fil
       "<img +[^>]*src=(['\"]){{valuePattern}}\\1[^>]*>"
     ],
     "valuePattern": "[^'\":;#]+",
-    "currentDirectoryPrefix": ""
+    "currentDirectoryPrefix": "",
+    "textToExclude": [
+      "<!--[\\s\\S]+?-->"
+    ]
   }
 }
 ```
