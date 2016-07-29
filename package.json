@@ -1,6 +1,6 @@
 {
   "name": "reffix",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Analyzes and repairs broken file path references in a project.",
   "keywords": [
     "references",
