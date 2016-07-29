@@ -1,6 +1,7 @@
 var path = require('path');
 var fse = require('fs-extra');
 var Q = require('q');
+var qe = require('../../lib/qExtensions');
 var mv = require('mv');
 
 var fileMover = {
@@ -22,10 +23,7 @@ var fileMover = {
 						movedDir + filenames[0],
 						movedDir + filenames[1]
 					)
-					.catch(function(err) {
-						console.error(err.message, err.stack);
-						return err;
-					});
+					.handleError();
 				});
 				return Q.all(fileMovePromises);
 			})
@@ -33,10 +31,7 @@ var fileMover = {
 				console.log('File structure prepared for tests');
 				done();
 			})
-			.catch(function(err) {
-				console.error(err);
-				done(err);
-			});
+			.handleError();
 	},
 
 	deleteMovedFiles: function(dir, done) {
